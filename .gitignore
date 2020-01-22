@@ -187,3 +187,4 @@ dmypy.json
 # End of https://www.gitignore.io/api/git,linux,macos,scala,python,jupyternotebooks
 
 *.pem
+*.gitignore
