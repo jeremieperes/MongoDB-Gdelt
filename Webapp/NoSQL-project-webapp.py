@@ -172,21 +172,8 @@ elif navigation=='Question 3':
 
     country['iso']=country['Country'].apply(iso)
 
-    fig = px.choropleth(country, locations="iso", color="Tone", range_color=[-10,10], color_continuous_scale="RdYlGn", width=700, height=700)
+    fig = px.choropleth(country, locations="iso", color="Tone", range_color=[-10,10], color_continuous_scale="RdYlGn")
     st.plotly_chart(fig)
-
-    #themes = st.sidebar.multiselect('Themes', df_themes['Theme'].unique())
-    #country = st.sidebar.multiselect('Countries', df_countries['Country'].unique())
-    #persons = st.sidebar.multiselect('Persons', df_persons['Person'].unique())
-
-
-    #df_filtered_q3 = filter_q3(df_q3, themes, country, city, persons, day, month, year)
-
-    #st.markdown("Nombre d'articles :")
-    #df_filtered_q3.GKGRECORDID.nunique()
-
-    #st.markdown('Ton moyen des articles:')
-    #df_filtered_q3.groupby('GKGRECORDID').max().Tone.mean()
 
 elif navigation=='Question 4':
     print("")
