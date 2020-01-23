@@ -196,9 +196,15 @@ elif navigation == 'Question 4':
 
     st.markdown("  ")
     st.markdown("Average Tone Trend to show the relationship:")
-    fig = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"])
+    # fig = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"])
     # df_q4_final_1 = pd.DataFrame(df_q4_final, columns=["SQLDATE", "avg_AvgTone"])
     #
     # fig = px.line(df_q4_final_1, title='Average Tone Trend Between ' + country1 + ' and ' + country2)
-    # fig = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"], title='Average Tone Trend Between ' + country1 + ' and ' + country2)
-    st.plotly_chart(fig)
+    fig1 = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"], title='Average Tone Trend Between ' + country1 + ' and ' + country2)
+    st.plotly_chart(fig1)
+
+    st.markdown("  ")
+    st.markdown("Number of Articles:")
+    fig2 = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["sum_NumArticles"],
+                   title='Average Tone Trend Between ' + country1 + ' and ' + country2)
+    st.plotly_chart(fig2)
