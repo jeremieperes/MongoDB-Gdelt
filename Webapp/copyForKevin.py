@@ -138,7 +138,7 @@ elif navigation=='Question 2':
     st.dataframe(df_q2)
     #df = px.data.gapminder()
     df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).sum()
-    df['iso']=df['Country'].apply(iso)
+    df['iso']=df['ActionGeo_CountryCode'].apply(iso)
     fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[20,80], width=800, height=800)
     st.plotly_chart(fig)
     print("")
