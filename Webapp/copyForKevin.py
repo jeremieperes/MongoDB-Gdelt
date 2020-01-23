@@ -78,7 +78,6 @@ def query2(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
     df_q2 = df_q2.sort_values(by = "numMentions", ascending = False)
     return df_q2
 
-df_2 = query2("FR", year="2019", day =["20", "18"])
 #########################################################################
 ###########################    Visualization    #########################
 #########################################################################
@@ -115,13 +114,13 @@ elif navigation=='Question 1':
 
 elif navigation=='Question 2':
     print("")
-    db, collection = connect_mongo('query2')
-    df_q2 = read_mongo(collection, {})
+    #db, collection = connect_mongo('query2')
+    #df_q2 = read_mongo(collection, {})
 
 
-    source = st.sidebar.selectbox('Pays :', df_q2["ActionGeo_CountryCode"].unique())
-
-    df_q2 = query2(source).copy()
+    #source = st.sidebar.selectbox('Pays :', df_q2["ActionGeo_CountryCode"].unique())
+    source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
+    #df_q2 = query2(source).copy()
 
     df = px.data.gapminder()
     fig = px.choropleth(df, locations="iso_alpha", color="lifeExp", hover_name="country", animation_frame="year", range_color=[20,80], width=1800, height=1400)
