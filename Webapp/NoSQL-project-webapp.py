@@ -143,10 +143,8 @@ elif navigation=='Question 3':
     st.write(tone_theme)
 
     country = tone_country.set_index('Country').join(df_countries.Country.value_counts())
-    st.write(country)
 
-
-    #fig = px.scatter(country, x=, y="Tone", color="Country")
+    fig = px.scatter(country, x="Tone", y="Country")
 
     fig = px.choropleth(tone_country, locations="Country", color="Tone", range_color=[20,80])
     st.plotly_chart(fig)
