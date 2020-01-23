@@ -18,7 +18,7 @@ st.title('Projet NoSQL')
 
 def connect_mongo(collection_name):
 
-    client = MongoClient("mongodb://gdeltuser:gdeltpass@ec2-15-188-82-40.eu-west-3.compute.amazonaws.com:27017,ec2-15-188-185-108.eu-west-3.compute.amazonaws.com:27017,ec2-35-180-90-165.eu-west-3.compute.amazonaws.com:27017/gdelt." + collection_name + "?replicaSet=rsGdelt", readPreference='primaryPreferred')
+    client = MongoClient("mongodb://gdeltuser:gdeltpass@172.31.24.60:27017,172.31.28.231:27017,172.31.25.118:27017/gdelt." + collection_name + "?replicaSet=rsGdelt", readPreference='primaryPreferred')
 
     db = client['gdelt']
     collection = db[collection_name]
@@ -39,32 +39,24 @@ def read_mongo(collection, query={}, no_id=True):
 
     return df
 
-def filter_q3(df, themes, country, city, persons, day, month, year):
+def filter_q3(df, day, month, year):
     filtered_df = df.copy()
-    if len(themes) != 0 :
-        filtered_df = filtered_df[(filtered_df['Themes'].isin(themes))]
-        mode ='city'
-    if len(country) != 0:
-        filtered_df = filtered_df[(filtered_df['Country'].isin(country))]
-    if len(city) != 0:
-        filtered_df = filtered_df[filtered_df['City'].isin(city)]
-    if len(persons) != 0:
-        filtered_df = filtered_df[filtered_df['Persons'].isin(persons)]
     if len(day) != 0:
         filtered_df = filtered_df[(filtered_df['Day'].isin(day))]
     if len(month) != 0:
         filtered_df = filtered_df[filtered_df['Month'].isin(month)]
     if len(year) != 0:
-        filtered_df = filtered_df[filtered_df['year'].isin(year)]
+        filtered_df = filtered_df[filtered_df['Year'].isin(year)]
     return filtered_df
 
 #########################################################################
 #############################    Queries    ###########################
 #########################################################################
 
-def query3(source) :
+def query3(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
     db, collection = connect_mongo('query3')
-    df_q3 = read_mongo(collection, {'SourceCommonName':source})
+    query3_params =  {'SourceCommonName':source, "Year": year, "Month" : {"$regex": month}, "Day": {"$regex":day}}
+    df_q3 = read_mongo(collection, query3_params)
     return df_q3
 
 #########################################################################
@@ -109,27 +101,53 @@ elif navigation=='Question 3':
 
     st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
 
-    source = st.text_input('Source name', 'theguardian.com')
+    source = st.sidebar.text_input('Source name')
 
-    df_q3 = query3(source).copy()
+    day = "[0-9][0-9]"
+    month = "[0-9][0-9]"
+    year = '2019'
 
-    df_q3.nunique()
+    day = st.sidebar.selectbox('Day', ['01','02','03','04','05','06','07','08','09','10',
+                                         '11','12','13','14','15','16','17','18','19','20',
+                                         '21','22','23','24','25','26','27','28','29','30','31'])
+    month = st.sidebar.selectbox('Month', ['01','02','03','04','05','06','07','08','09','10','11','12'])
+    year = st.sidebar.selectbox('Year', ['2018','2019'])
 
-    themes = st.sidebar.multiselect('Themes', df_q3['Themes'].unique())
-    country = st.sidebar.multiselect('Country', df_q3['Country'].unique())
-    city = st.sidebar.multiselect('City', df_q3['City'].unique())
-    persons = st.sidebar.multiselect('Persons', df_q3['Persons'].unique())
-    day = st.sidebar.multiselect('Day', df_q3['Day'].unique())
-    month = st.sidebar.multiselect('Month', df_q3['Month'].unique())
-    year = st.sidebar.multiselect('Year', df_q3['Year'].unique())
+    df_q3 = query3(source, year=year, month = month , day = day)
 
-    df_filtered_q3 = filter_q3(df_q3, themes, country, city, persons, day, month, year)
+    df_themes = df_q3.set_index('GKGRECORDID').join(df_q3.set_index('GKGRECORDID').Themes.apply(pd.Series).stack().reset_index(level=0).rename(columns={0:'Theme'}).set_index('GKGRECORDID')).reset_index()
+    df_persons = df_q3.set_index('GKGRECORDID').join(df_q3.set_index('GKGRECORDID').Persons.apply(pd.Series).stack().reset_index(level=0).rename(columns={0:'Person'}).set_index('GKGRECORDID')).reset_index()
+    df_countries =df_q3.set_index('GKGRECORDID').join(df_q3.set_index('GKGRECORDID').Countries.apply(pd.Series).stack().reset_index(level=0).rename(columns={0:'Country'}).set_index('GKGRECORDID')).reset_index()
 
-    st.markdown("Nombre d'articles :")
-    df_filtered_q3.GKGRECORDID.nunique()
+    st.markdown("Thèmes traitées par cette source :")
+    df_themes.Theme.unique()
 
-    st.markdown('Ton moyen des articles:')
-    df_filtered_q3.groupby('GKGRECORDID').max().Tone.mean()
+    st.markdown("Personnes traitées par cette source :")
+    df_persons.Person.unique()
+
+    st.markdown("Pays traités par cette source :")
+    df_countries.Country.unique()
+
+    st.markdown("Ton moyen :")
+    tone_country = df_countries.groupby('Country').mean().reset_index()
+    tone_person = df_persons.groupby('Person').mean().reset_index()
+    tone_theme = df_themes.groupby('Theme').mean().reset_index()
+
+    fig = px.choropleth(tone_country, locations="Country", color="Tone", range_color=[20,80])
+    st.plotly_chart(fig)
+
+    #themes = st.sidebar.multiselect('Themes', df_themes['Theme'].unique())
+    #country = st.sidebar.multiselect('Countries', df_countries['Country'].unique())
+    #persons = st.sidebar.multiselect('Persons', df_persons['Person'].unique())
+
+
+    #df_filtered_q3 = filter_q3(df_q3, themes, country, city, persons, day, month, year)
+
+    #st.markdown("Nombre d'articles :")
+    #df_filtered_q3.GKGRECORDID.nunique()
+
+    #st.markdown('Ton moyen des articles:')
+    #df_filtered_q3.groupby('GKGRECORDID').max().Tone.mean()
 
 elif navigation=='Question 4':
     print("")
