@@ -161,10 +161,8 @@ elif navigation=='Question 3':
     st.plotly_chart(fig)
 
     def iso(country):
-        pays = pycountry.countries.get(alpha_2=country)
-        return pays
-
-    st.write(iso('US'))
+        pays = pycountry.countries.get(alpha_2=country.upper())
+        return pays.alpha_3
 
     country['iso']=country['Country'].apply(iso)
     st.write(country)
