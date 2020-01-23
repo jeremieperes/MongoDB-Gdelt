@@ -149,5 +149,5 @@ elif navigation=='Question 3':
     #df_filtered_q3.groupby('GKGRECORDID').max().Tone.mean()
 
 elif navigation=='Question 4':
-	st.markdown("Ton moyen :")
-    print("")
+	st.markdown("Pays traités par cette source :")
+    
