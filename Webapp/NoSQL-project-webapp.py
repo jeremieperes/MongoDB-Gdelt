@@ -146,6 +146,8 @@ elif navigation=='Question 3':
     country = country.rename(columns={'Country':'Number of articles'})
     country.reset_index(inplace=True)
 
+    st.write(country)
+
     fig = px.scatter(country, x="Tone", y="Number of articles", color='index')
     st.plotly_chart(fig)
 
