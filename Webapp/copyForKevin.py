@@ -80,6 +80,13 @@ def query2(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
     df_q2 = df_q2.sort_values(by = "numMentions", ascending = False)
     return df_q2
 
+def iso(country):
+    pays = pycountry.countries.get(alpha_2=country.upper())
+    if pays is not None:
+        return pays.alpha_3
+    else:
+        return ''
+
 #########################################################################
 ###########################    Visualization    #########################
 #########################################################################
@@ -122,16 +129,17 @@ elif navigation=='Question 2':
 
     source = st.sidebar.text_input('Pays :', "FR")
     year = st.sidebar.selectbox("Année :", ["2018","2019","2017","2020"])
-    month = st.sidebar.multiselect("Mois :", ["[0-9][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12"])
-    day = st.sidebar.selectbox("Jour :", ["[0-9][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12",
+    month = st.sidebar.multiselect("Mois :", ["[0-1][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12"])
+    day = st.sidebar.multiselect("Jour :", ["[0-1][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
 
 #source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
     df_q2 = query2(source, year=year, month=month, day=day).copy()
     st.dataframe(df_q2)
     #df = px.data.gapminder()
-    # df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).count()
-    fig = px.choropleth(df_q2, locations="ActionGeo_CountryCode", color="numMentions", animation_frame="Month", range_color=[20,80], width=800, height=800)
+    df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).sum("numMentions")
+    df['iso']=df['Country'].apply(iso)
+    fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[20,80], width=800, height=800)
     st.plotly_chart(fig)
     print("")
 
