@@ -143,9 +143,9 @@ elif navigation=='Question 3':
     st.write(tone_theme)
 
     country = tone_country.set_index('Country').join(df_countries.Country.value_counts())
-    country.reset_index(inplace=True).rename(columns={'Country':'Number of articles'}, inplace=True)
+    country.reset_index(inplace=True)
 
-    fig = px.scatter(country, x="Tone", y="Number of articles")
+    fig = px.scatter(country, x="Tone", y="Country")
     st.plotly_chart(fig)
 
 
