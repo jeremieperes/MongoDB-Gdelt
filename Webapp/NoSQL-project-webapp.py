@@ -94,7 +94,7 @@ elif navigation=='Question 1':
     df_q1 = query1(year=year1, month=month1, day=day1, country=country1, language=language1)
     st.dataframe(df_q1, height=500)
 
-    fig = px.scatter(df_q1, x="numArticles", y="numEvent")
+    fig = px.scatter(df_q1, x="numArticles", y="numEvent", color="pays")
     st.plotly_chart(fig)
 
 
