@@ -116,13 +116,13 @@ elif navigation=='Question 3':
     df_countries =df_q3.set_index('GKGRECORDID').join(df_q3.set_index('GKGRECORDID').Countries.apply(pd.Series).stack().reset_index(level=0).rename(columns={0:'Country'}).set_index('GKGRECORDID')).reset_index()
 
     st.markdown("Thèmes traitées par cette source :")
-    df_themes.Theme.unique()
+    st.write(df_themes.Theme.unique())
 
     st.markdown("Personnes traitées par cette source :")
-    df_persons.Person.unique()
+    st.write(df_persons.Person.unique())
 
     st.markdown("Pays traités par cette source :")
-    df_countries.Country.unique()
+    st.write(df_countries.Country.unique())
 
     st.markdown("Ton moyen :")
     tone_country = df_countries.groupby('Country').mean().reset_index()
