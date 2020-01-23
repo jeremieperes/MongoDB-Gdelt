@@ -171,10 +171,9 @@ elif navigation=='Question 3':
             return ''
 
     country['iso']=country['Country'].apply(iso)
-    st.write(country)
 
-    #fig = px.choropleth(country, locations="Country", color="Tone", range_color=[20,80])
-
+    fig = px.choropleth(country, locations="iso", color="Tone", range_color=[20,80])
+    st.plotly_chart(fig)
 
     #themes = st.sidebar.multiselect('Themes', df_themes['Theme'].unique())
     #country = st.sidebar.multiselect('Countries', df_countries['Country'].unique())
