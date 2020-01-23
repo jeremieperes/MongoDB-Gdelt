@@ -8,6 +8,7 @@ import copy
 import json
 import re
 import time
+import pycountry
 import os.path
 
 st.title('Projet NoSQL')
@@ -132,7 +133,9 @@ elif navigation=='Question 3':
     tone_theme = df_themes.groupby('Theme').mean().reset_index()
     st.write(tone_theme)
 
-    fig = px.choropleth(tone_country, locations="Country", color="Tone", range_color=[20,80])
+    tone_country['ISO'] = pycountry.countries.get(alpha_2=tone_country.Country).alpha_3
+
+    fig = px.choropleth(tone_country, locations="ISO", color="Tone", range_color=[20,80])
     st.plotly_chart(fig)
 
     #themes = st.sidebar.multiselect('Themes', df_themes['Theme'].unique())
