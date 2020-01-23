@@ -189,6 +189,7 @@ elif navigation == 'Question 4':
     df_q4_final = pd.DataFrame(df_q4,
                       columns=['Year', 'Month', 'Day', 'Actor1Geo_CountryCode', 'Actor2Geo_CountryCode', 'avg_AvgTone',
                                'sum_NumArticles', 'min_Actor1Geo_Long', 'min_Actor1Geo_lat', 'max_Actor1Geo_Long', 'max_Actor1Geo_Lat', 'min_Actor2Geo_Long', 'min_Actor2Geo_lat', 'max_Actor2Geo_Long', 'max_Actor2Geo_Lat', 'SQLDATE'])
+    df_q4_final['SQLDATE'] = df_q4_final['SQLDATE'].astype('datetime64[ns]')
     df_q4_final = df_q4_final.sort_values(by=['Year', 'Month', 'Day'])
     df_q4_final = df_q4_final.reset_index(drop=True)
     st.dataframe(df_q4_final)
