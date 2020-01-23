@@ -104,11 +104,11 @@ elif navigation=='Question 3':
 
     source = st.sidebar.text_input('Source name','theguardian.com')
 
-    day = st.sidebar.multiselect('Day', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10',
+    day = st.sidebar.select('Day', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10',
                                          '11','12','13','14','15','16','17','18','19','20',
                                          '21','22','23','24','25','26','27','28','29','30','31'])
-    month = st.sidebar.multiselect('Month', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10','11','12'])
-    year = st.sidebar.multiselect('Year', ['2019','2018'])
+    month = st.sidebar.select('Month', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10','11','12'])
+    year = st.sidebar.select('Year', ['2019','2018'])
 
     df_q3 = query3(source, year=year, month = month , day = day)
 
