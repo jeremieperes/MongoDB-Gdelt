@@ -142,12 +142,13 @@ elif navigation=='Question 3':
     tone_theme = df_themes.groupby('Theme').mean().reset_index()
     st.write(tone_theme)
 
-    def iso(country):
-        return pycountry.countries.get(alpha_2=country).alpha_3
+    country = tone_country.set_index('Country').join(df_countries.Country.value_counts())
+    st.write(country)
 
-    tone_country['ISO'] = tone_country.Country.apply(iso)
 
-    fig = px.choropleth(tone_country, locations="ISO", color="Tone", range_color=[20,80])
+    #fig = px.scatter(country, x=, y="Tone", color="Country")
+
+    fig = px.choropleth(tone_country, locations="Country", color="Tone", range_color=[20,80])
     st.plotly_chart(fig)
 
     #themes = st.sidebar.multiselect('Themes', df_themes['Theme'].unique())
