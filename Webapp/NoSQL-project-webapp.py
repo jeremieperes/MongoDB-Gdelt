@@ -109,9 +109,9 @@ elif navigation=='Question 1':
     fig = px.scatter(df_q1, x="numArticles", y="numEvent")
     st.plotly_chart(fig)
 
-    df_q1_agg = df_q1.groupby("iso").sum()
+    df_q1_agg = df_q1.groupby("iso").sum().reset_index()
 
-    fig = px.bar(df_q1_agg, x="pays", y="Couverture médiatique")
+    fig = px.bar(df_q1_agg, x="iso", y="Couverture médiatique")
     st.plotly_chart(fig)
 
     fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[-100,100], color_continuous_scale="RdYlGn")
