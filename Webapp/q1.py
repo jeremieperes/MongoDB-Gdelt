@@ -57,7 +57,7 @@ def filter_q3(df, day, month, year):
 #########################################################################
 #############################    Queries    ###########################
 #########################################################################
-def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="FR", language="eng"):
+def query1(year="2019", month="00", day="00", country="FR", language="eng"):
     _, collection_q1 = connect_mongo('query1')
     query1_params = {"jour": year + month + day, "pays": country, "langue": language}
     df_q1 = read_mongo(collection_q1, query1_params)
