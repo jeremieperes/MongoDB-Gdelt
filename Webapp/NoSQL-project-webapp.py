@@ -160,7 +160,13 @@ elif navigation=='Question 3':
     fig = px.bar(x=df_themes.Theme.value_counts().index[:10], y=df_themes.Theme.value_counts().values[:10])
     st.plotly_chart(fig)
 
-    country['iso']=country['Country'].apply(lambda x: pycountry.countries.get(alpha_2=x).alpha_3)
+    def iso(country):
+        pays = pycountry.countries.get(alpha_2=country)
+        return pays.alpha_3
+
+    st.write(iso('US'))
+
+    country['iso']=country['Country'].apply(iso)
     st.write(country)
 
     #fig = px.choropleth(country, locations="Country", color="Tone", range_color=[20,80])
