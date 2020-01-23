@@ -101,17 +101,13 @@ elif navigation=='Question 3':
 
     st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
 
-    source = st.sidebar.text_input('Source name')
+    source = st.sidebar.text_input('Source name','theguardian.com')
 
-    day = "[0-9][0-9]"
-    month = "[0-9][0-9]"
-    year = '2019'
-
-    day = st.sidebar.selectbox('Day', ['01','02','03','04','05','06','07','08','09','10',
+    day = st.sidebar.selectbox('Day', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10',
                                          '11','12','13','14','15','16','17','18','19','20',
                                          '21','22','23','24','25','26','27','28','29','30','31'])
-    month = st.sidebar.selectbox('Month', ['01','02','03','04','05','06','07','08','09','10','11','12'])
-    year = st.sidebar.selectbox('Year', ['2018','2019'])
+    month = st.sidebar.selectbox('Month', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10','11','12'])
+    year = st.sidebar.selectbox('Year', ['2019','2018'])
 
     df_q3 = query3(source, year=year, month = month , day = day)
 
