@@ -136,7 +136,7 @@ elif navigation=='Question 3':
     def iso(country):
         return pycountry.countries.get(alpha_2=country).alpha_3
 
-    tone_country['ISO'] = tone_country.Country.apply(iso, axis=1)
+    tone_country['ISO'] = tone_country.Country.apply(iso)
 
     fig = px.choropleth(tone_country, locations="ISO", color="Tone", range_color=[20,80])
     st.plotly_chart(fig)
