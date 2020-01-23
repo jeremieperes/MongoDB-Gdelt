@@ -199,5 +199,5 @@ elif navigation == 'Question 4':
     # fig = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"])
     df_q4_final_1 = pd.DataFrame(df_q4_final, columns=["SQLDATE", "avg_AvgTone"])
 
-    fig = px.line(df_q4_final_1, x="Date", y="AvgTone", title='Average Tone Trend Between' + country1 + ' and ' + country2)
+    fig = px.line(df_q4_final_1, title='Average Tone Trend Between' + country1 + ' and ' + country2)
     st.plotly_chart(fig)
