@@ -92,9 +92,38 @@ elif navigation=='Question 1':
     language1 = st.sidebar.text_input("language", "eng")
 
     df_q1 = query1(year=year1, month=month1, day=day1, country=country1, language=language1)
+
+    df_q1['Couverture médiatique'] = df_q1.numArticles / df_q1.numEvent
+
+    def iso(country):
+        pays = pycountry.countries.get(alpha_2=country.upper())
+        if pays is not None:
+            return pays.alpha_3
+        else:
+            return ''
+
+    df_q1['iso']=df_q1['pays'].apply(iso)
+
     st.dataframe(df_q1, height=500)
 
-    fig = px.scatter(df_q1, x="numArticles", y="numEvent", color="pays")
+    fig = px.scatter(df_q1, x="numArticles", y="numEvent")
+    st.plotly_chart(fig)
+
+    df_q1_agg = df_q1.groupby("iso").sum()
+
+    fig = px.bar(df_q1_agg, x="pays", y="Couverture médiatique")
+    st.plotly_chart(fig)
+
+    fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[-100,100], color_continuous_scale="RdYlGn")
+    st.plotly_chart(fig)
+
+    # Ajouter histogrammes top 10 des pays et top 10 des langues
+    st.markdown("**Top 10 langues:**")
+    fig = px.bar(x=df_q1.langue, y=df_q1.numArticles)
+    st.plotly_chart(fig)
+
+    st.markdown("**Top 10 pays:**")
+    fig = px.bar(x=df_q1.pays, y=df_q1.numArticles)
     st.plotly_chart(fig)
 
 
