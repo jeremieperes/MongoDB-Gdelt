@@ -172,9 +172,9 @@ elif navigation == 'Question 3':
     # df_filtered_q3.groupby('GKGRECORDID').max().Tone.mean()
 
 elif navigation == 'Question 4':
-    st.markdown("Pays traités par cette source :")
-    country1 = st.sidebar.selectbox('Country1', ['US', 'CH', 'FR', 'GB'])
-    country2 = st.sidebar.selectbox('Country2', ['CH', 'US', 'FR', 'GB'])
+    st.markdown("dresser la cartographie des relations entre les pays d’après le ton des articles : pour chaque paire (pays1, pays2), calculer le nombre d’article, le ton moyen (aggrégations sur Année/Mois/Jour, filtrage par pays ou carré de coordonnées)")
+    country1 = st.sidebar.selectbox('Country1', ['US', 'CH', 'FR', 'GB', 'CN'])
+    country2 = st.sidebar.selectbox('Country2', ['CH', 'US', 'FR', 'GB', 'CN'])
     day = st.sidebar.selectbox('Day',
                                ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12',
                                 '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26',
@@ -183,7 +183,7 @@ elif navigation == 'Question 4':
                                  ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
     year = st.sidebar.selectbox('Year', ['2019', '2018'])
 
-    df_q4 = query4(country1=country1, country2=country1, year=year, month=month, day=day)
+    df_q4 = query4(country1=country1, country2=country2, year=year, month=month, day=day)
     df_q4_final = pd.DataFrame(df_q4,
                       columns=['Year', 'Month', 'Day', 'Actor1Geo_CountryCode', 'Actor2Geo_CountryCode', 'avg_AvgTone',
                                'sum_NumArticles', 'min_Actor1Geo_Long', 'min_Actor1Geo_lat', 'max_Actor1Geo_Long', 'max_Actor1Geo_Lat', 'min_Actor2Geo_Long', 'min_Actor2Geo_lat', 'max_Actor2Geo_Long', 'max_Actor2Geo_Lat'])
