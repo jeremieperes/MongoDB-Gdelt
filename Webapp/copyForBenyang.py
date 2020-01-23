@@ -173,6 +173,8 @@ elif navigation == 'Question 3':
 
 elif navigation == 'Question 4':
     st.markdown("Pays traités par cette source :")
+    country1 = st.sidebar.selectbox('Country1', ['US', 'CH', 'FR', 'GB'])
+    country2 = st.sidebar.selectbox('Country2', ['CH', 'US', 'FR', 'GB'])
     day = st.sidebar.selectbox('Day',
                                ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12',
                                 '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26',
@@ -181,4 +183,5 @@ elif navigation == 'Question 4':
                                  ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
     year = st.sidebar.selectbox('Year', ['2019', '2018'])
 
-    df_q4 = query4('US', 'CH', year=year, month=month, day=day)
+    df_q4 = query4(country1=country1, country2=country1, year=year, month=month, day=day)
+    st.dataframe(df_q4)
