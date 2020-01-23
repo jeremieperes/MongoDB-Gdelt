@@ -114,11 +114,11 @@ elif navigation=='Question 1':
 
 elif navigation=='Question 2':
     print("")
-    db, collection = connect_mongo('query2')
-    df_q2 = read_mongo(collection, {})
+    #db, collection = connect_mongo('query2')
+    #df_q2 = read_mongo(collection, {})
 
 
-    source = st.sidebar.selectbox('Pays :', df_q2["ActionGeo_CountryCode"].unique())
+    source = st.sidebar.selectbox('Pays :', ["EN","FR"])
     #source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
     df_q2 = query2(source).copy()
     st.dataframe(df_q2)
