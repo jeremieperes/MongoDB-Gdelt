@@ -72,9 +72,9 @@ if navigation=='Home':
 
 elif navigation=='Question 1':
 
-    def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="FR", language="eng"):
+    def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="\w", language="\w"):
         _, collection_q1 = connect_mongo('query1')
-        query1_params = {"jour": {"$regex": year + month + day}, "pays": country, "langue": language}
+        query1_params = {"jour": {"$regex": year + month + day}, "pays": {"$regex": country}, "langue": {"$regex": language}}
         df_q1 = read_mongo(collection_q1, query1_params)
         return df_q1
 
@@ -92,7 +92,7 @@ elif navigation=='Question 1':
     language1 = st.sidebar.text_input("language", "eng")
 
     df_q1 = query1(year=year1, month=month1, day=day1, country=country1, language=language1)
-    st.dataframe(df_q1)
+    st.dataframe(df_q1, height=500)
 
 elif navigation=='Question 2':
     print("")
