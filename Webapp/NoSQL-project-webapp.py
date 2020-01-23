@@ -145,9 +145,10 @@ elif navigation=='Question 3':
     country = tone_country.set_index('Country').join(df_countries.Country.value_counts())
 
     fig = px.scatter(country, x="Tone", y="Country")
-
-    fig = px.choropleth(tone_country, locations="Country", color="Tone", range_color=[20,80])
     st.plotly_chart(fig)
+
+
+    #fig = px.choropleth(tone_country, locations="Country", color="Tone", range_color=[20,80])
 
     #themes = st.sidebar.multiselect('Themes', df_themes['Theme'].unique())
     #country = st.sidebar.multiselect('Countries', df_countries['Country'].unique())
