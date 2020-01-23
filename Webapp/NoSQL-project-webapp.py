@@ -9,7 +9,6 @@ import json
 import re
 import time
 import pycountry
-from iso3166 import countries
 import os.path
 
 st.title('Projet NoSQL')
