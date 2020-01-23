@@ -48,6 +48,33 @@ def iso(country):
         return ''
 
 #########################################################################
+#############################    Queries    ###########################
+#########################################################################
+
+def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="\w", language="\w"):
+    _, collection_q1 = connect_mongo('query1')
+    query1_params = {"jour": {"$regex": year + month + day}, "pays": {"$regex": country}, "langue": {"$regex": language}}
+    df_q1 = read_mongo(collection_q1, query1_params)
+    return df_q1
+
+def query2(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
+    db, collection = connect_mongo('query2')
+    if type(month) == list :
+        month = "|".join(month)
+    if type(day) == list :
+        day = "|".join(day)
+    query2_params =  {"ActionGeo_CountryCode": source, "Year": year, "Month" : {"$regex": month}, "Day": {"$regex":day}}
+    df_q2 = read_mongo(collection, query2_params)
+    df_q2 = df_q2.sort_values(by = "numMentions", ascending = False)
+    return df_q2
+
+def query3(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
+    db, collection = connect_mongo('query3')
+    query3_params =  {'SourceCommonName':source, "Year": year, "Month" : {"$regex": month}, "Day": {"$regex":day}}
+    df_q3 = read_mongo(collection, query3_params)
+    return df_q3
+
+#########################################################################
 ###########################    Visualization    #########################
 #########################################################################
 
@@ -78,12 +105,6 @@ if navigation=='Home':
     ''')
 
 elif navigation=='Question 1':
-
-    def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="\w", language="\w"):
-        _, collection_q1 = connect_mongo('query1')
-        query1_params = {"jour": {"$regex": year + month + day}, "pays": {"$regex": country}, "langue": {"$regex": language}}
-        df_q1 = read_mongo(collection_q1, query1_params)
-        return df_q1
 
     st.markdown(
         "Afficher le nombre d’articles/évènements qu’il y a eu pour chaque triplet (jour, pays de l’évènement, langue de l’article).")
@@ -132,12 +153,6 @@ elif navigation=='Question 2':
 
 
 elif navigation=='Question 3':
-
-    def query3(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
-        db, collection = connect_mongo('query3')
-        query3_params =  {'SourceCommonName':source, "Year": year, "Month" : {"$regex": month}, "Day": {"$regex":day}}
-        df_q3 = read_mongo(collection, query3_params)
-        return df_q3
 
     st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
 
