@@ -158,5 +158,5 @@ elif navigation=='Question 4':
     month = st.sidebar.selectbox('Month', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10','11','12'])
     year = st.sidebar.selectbox('Year', ['2019','2018'])
 
-    df_q3 = query3(source, year=year, month = month , day = day)
+    df_q4 = query4('US','CH', year=year, month = month , day = day)
     
