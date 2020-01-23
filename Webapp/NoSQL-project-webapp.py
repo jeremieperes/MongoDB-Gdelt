@@ -116,18 +116,21 @@ elif navigation=='Question 3':
     df_countries =df_q3.set_index('GKGRECORDID').join(df_q3.set_index('GKGRECORDID').Countries.apply(pd.Series).stack().reset_index(level=0).rename(columns={0:'Country'}).set_index('GKGRECORDID')).reset_index()
 
     st.markdown("Thèmes traitées par cette source :")
-    st.write(df_themes.Theme.unique())
+    st.write(df_themes.Theme.value_counts())
 
     st.markdown("Personnes traitées par cette source :")
-    st.write(df_persons.Person.unique())
+    st.write(df_persons.Person.value_counts())
 
     st.markdown("Pays traités par cette source :")
-    st.write(df_countries.Country.unique())
+    st.write(df_countries.Country.value_counts())
 
     st.markdown("Ton moyen :")
     tone_country = df_countries.groupby('Country').mean().reset_index()
+    st.write(tone_country)
     tone_person = df_persons.groupby('Person').mean().reset_index()
+    st.write(tone_person)
     tone_theme = df_themes.groupby('Theme').mean().reset_index()
+    st.write(tone_theme)
 
     fig = px.choropleth(tone_country, locations="Country", color="Tone", range_color=[20,80])
     st.plotly_chart(fig)
