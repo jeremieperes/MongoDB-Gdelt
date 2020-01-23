@@ -67,6 +67,18 @@ def query3(source) :
     df_q3 = read_mongo(collection, {'SourceCommonName':source})
     return df_q3
 
+def query2(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
+    db, collection = connect_mongo('query2')
+    if type(month) == list :
+        month = "|".join(month)
+    if type(day) == list :
+        day = "|".join(day)
+    query2_params =  {"ActionGeo_CountryCode": source, "Year": year, "Month" : {"$regex": month}, "Day": {"$regex":day}}
+    df_q2 = read_mongo(collection, query2_params)
+    df_q2 = df_q2.sort_values(by = "numMentions", ascending = False)
+    return df_q2
+
+df_2 = query2("FR", year="2019", day =["20", "18"])
 #########################################################################
 ###########################    Visualization    #########################
 #########################################################################
@@ -103,8 +115,16 @@ elif navigation=='Question 1':
 
 elif navigation=='Question 2':
     print("")
+    db, collection = connect_mongo('query2')
+    df_q2 = read_mongo(collection, {})
+
+
+    source = st.sidebar.selectbox('Pays :', df_q2["ActionGeo_CountryCode"].unique())
+
+    df_q2 = query2(source).copy()
+
     df = px.data.gapminder()
-    fig = px.choropleth(df, locations="iso_alpha", color="lifeExp", hover_name="country", animation_frame="year", range_color=[20,80], width=2800, height=2400)
+    fig = px.choropleth(df, locations="iso_alpha", color="lifeExp", hover_name="country", animation_frame="year", range_color=[20,80], width=1800, height=1400)
     st.plotly_chart(fig)
     print("")
 
