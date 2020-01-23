@@ -92,7 +92,7 @@ def iso(country):
 #########################################################################
 
 navigation = st.sidebar.radio("Navigation",('Home','Question 1', 'Question 2','Question 3', 'Question 4',))
-graph = st.sidebar.radio("Affichage graphique query 2",("Show graph q2"))
+graph = st.sidebar.radio("Affichage graphique query 2",("Show graph q2",))
 
 if navigation=='Home':
     st.markdown(r'''
