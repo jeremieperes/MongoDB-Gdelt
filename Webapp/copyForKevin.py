@@ -120,7 +120,7 @@ if navigation=='Home':
 elif navigation=='Question 1':
     print("")
 
-
+first = True
 elif navigation=='Question 2':
     print("")
     #db, collection = connect_mongo('query2')
@@ -129,19 +129,24 @@ elif navigation=='Question 2':
 
     source = st.sidebar.text_input('Pays :', "FR")
     year = st.sidebar.selectbox("Année :", ["2018","2019","2017","2020"])
-    month = st.sidebar.multiselect("Mois :", ["[0-1][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12"])
-    day = st.sidebar.multiselect("Jour :", ["[0-1][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12",
+    month = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
+    day = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
-
+    if first :
+        df_q2_temps = query2({}, year=year).copy()
+        df = df_q2_temps.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
+        df['iso']=df['ActionGeo_CountryCode'].apply(iso)
+        first = False
 #source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
     df_q2 = query2(source, year=year, month=month, day=day).copy()
     st.dataframe(df_q2)
     #df = px.data.gapminder()
-    df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
-    df['iso']=df['ActionGeo_CountryCode'].apply(iso)
+    st.markdown(" Pour aller plus loin ... ")
+    print("")
+    #df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
     fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[20,80], width=800, height=800)
     st.plotly_chart(fig)
-    print("")
+
 
 
 elif navigation=='Question 3':
