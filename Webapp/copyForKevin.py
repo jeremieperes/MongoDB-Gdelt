@@ -18,7 +18,7 @@ st.title('Projet NoSQL')
 
 def connect_mongo(collection_name):
 
-    client = MongoClient("mongodb://gdeltuser:gdeltpass@ec2-15-188-82-40.eu-west-3.compute.amazonaws.com:27017,ec2-15-188-185-108.eu-west-3.compute.amazonaws.com:27017,ec2-35-180-90-165.eu-west-3.compute.amazonaws.com:27017/gdelt." + collection_name + "?replicaSet=rsGdelt", readPreference='primaryPreferred')
+    client = MongoClient("mongodb://gdeltuser:gdeltpass@172.31.24.60:27017,172.31.28.231:27017,172.31.25.118:27017/gdelt." + collection_name + "?replicaSet=rsGdelt", readPreference='primaryPreferred')
 
     db = client['gdelt']
     collection = db[collection_name]
