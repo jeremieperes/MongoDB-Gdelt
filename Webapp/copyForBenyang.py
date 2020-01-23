@@ -184,4 +184,8 @@ elif navigation == 'Question 4':
     year = st.sidebar.selectbox('Year', ['2019', '2018'])
 
     df_q4 = query4(country1=country1, country2=country1, year=year, month=month, day=day)
-    st.dataframe(df_q4)
+    df_q4_final = pd.DataFrame(df_q4,
+                      columns=['Year', 'Month', 'Day', 'Actor1Geo_CountryCode', 'Actor2Geo_CountryCode', 'avg_AvgTone',
+                               'sum_NumArticles', 'min_Actor1Geo_Long', 'min_Actor1Geo_lat', 'max_Actor1Geo_Long', 'max_Actor1Geo_Lat', 'min_Actor2Geo_Long', 'min_Actor2Geo_lat', 'max_Actor2Geo_Long', 'max_Actor2Geo_Lat'])
+    df_q4_final = df_q4_final.sort_values(by=['Year', 'Month', 'Day'])
+    st.dataframe(df_q4_final)
