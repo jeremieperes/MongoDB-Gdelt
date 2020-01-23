@@ -145,10 +145,10 @@ elif navigation=='Question 2':
     #df = px.data.gapminder()
     print("")
     print("")
-    st.title("Pour aller plus loin ... /")
+    st.title("Pour aller plus loin ... ")
 
     #df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
-    fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[0,3000], width=800, height=800)
+    fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[0,1000], width=800, height=800)
     st.plotly_chart(fig)
 
 
