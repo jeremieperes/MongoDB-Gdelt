@@ -152,14 +152,15 @@ elif navigation=='Question 3':
     theme = theme.rename(columns={'Theme':'Number of articles'})
     theme.reset_index(inplace=True)
 
-    fig = px.scatter(theme, x="Tone", y="Number of articles", color='Theme')
-    st.plotly_chart(fig)
+    st.write(theme)
+    #fig = px.scatter(theme, x="Tone", y="Number of articles", color='Theme')
+    #st.plotly_chart(fig)
 
     st.markdown("**Top 10:**")
     fig = px.bar(x=df_themes.Theme.value_counts().index[:10], y=df_themes.Theme.value_counts().values[:10])
     st.plotly_chart(fig)
 
-    country['iso']=country['Country'].apply(lambda x: pycountry.countries.get(alpha_2=x.values).alpha_3)
+    country['iso']=country['Country'].apply(lambda x: pycountry.countries.get(alpha_2=x).alpha_3)
     st.write(country)
 
     #fig = px.choropleth(country, locations="Country", color="Tone", range_color=[20,80])
