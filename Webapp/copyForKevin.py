@@ -135,7 +135,7 @@ elif navigation=='Question 2':
 
 
     db, collection = connect_mongo('query2')
-    df_q2_temps = read_mongo(collection, {"Year": "2019", "Month": {"$regex" : "01|02"}})
+    df_q2_temps = read_mongo(collection, {"Year": "2019", "Month": {"$regex" : "01|02|03|04|05"}})
     df = df_q2_temps.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
     df['iso']=df['ActionGeo_CountryCode'].apply(iso)
 
@@ -148,7 +148,7 @@ elif navigation=='Question 2':
     st.title("Pour aller plus loin ... ")
 
     #df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
-    fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[0,1000], width=800, height=800)
+    fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[0,2000], width=800, height=800)
     st.plotly_chart(fig)
 
 
