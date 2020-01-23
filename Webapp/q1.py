@@ -58,9 +58,9 @@ def filter_q3(df, day, month, year):
 #############################    Queries    ###########################
 #########################################################################
 def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="FR", language="eng"):
-    db, collection = connect_mongo('query1')
+    _, collection_q1 = connect_mongo('query1')
     query1_params = {"jour": year + month + day, "pays": country, "langue": language}
-    df_q1 = read_mongo(collection, query1_params)
+    df_q1 = read_mongo(collection_q1, query1_params)
     return df_q1
 
 
@@ -105,17 +105,17 @@ elif navigation == 'Question 1':
     st.markdown(
         "afficher le nombre d’articles/évènements qu’il y a eu pour chaque triplet (jour, pays de l’évènement, langue de l’article).")
 
-    day = st.sidebar.selectbox('Day', ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
+    day1 = st.sidebar.selectbox('Day', ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
                                        '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
                                        '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'])
-    month = st.sidebar.selectbox('Month',
+    month1 = st.sidebar.selectbox('Month',
                                  ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
-    year = st.sidebar.selectbox('Year', ['2019', '2018'])
+    year1 = st.sidebar.selectbox('Year', ['2019', '2018'])
 
-    country = st.sidebar.text_input("Country", "FR")
-    language = st.sidebar.text_input("language", "eng")
+    country1 = st.sidebar.text_input("Country", "FR")
+    language1 = st.sidebar.text_input("language", "eng")
 
-    df_q1 = query1(year=year, month=month, day=day, country=country, language=language)
+    df_q1 = query1(year=year1, month=month1, day=day1, country=country1, language=language1)
     st.dataframe(df_q1)
 
 elif navigation == 'Question 2':
