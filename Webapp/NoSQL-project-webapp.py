@@ -88,8 +88,8 @@ elif navigation=='Question 1':
                                  ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
     year1 = st.sidebar.selectbox('Year', ['2019', '2018'])
 
-    country1 = st.sidebar.text_input("Country", "FR")
-    language1 = st.sidebar.text_input("language", "eng")
+    country1 = st.sidebar.text_input("Country")
+    language1 = st.sidebar.text_input("language")
 
     df_q1 = query1(year=year1, month=month1, day=day1, country=country1, language=language1)
 
@@ -114,7 +114,7 @@ elif navigation=='Question 1':
     fig = px.bar(df_q1_agg, x="iso", y="Couverture médiatique")
     st.plotly_chart(fig)
 
-    fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[-100,100], color_continuous_scale="RdYlGn")
+    fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[0,350], color_continuous_scale="RdYlGn")
     st.plotly_chart(fig)
 
     # Ajouter histogrammes top 10 des pays et top 10 des langues
