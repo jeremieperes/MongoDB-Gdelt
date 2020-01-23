@@ -162,7 +162,7 @@ elif navigation=='Question 3':
 
     def iso(country):
         pays = pycountry.countries.get(alpha_2=country)
-        return pays.alpha_3
+        return pays
 
     st.write(iso('US'))
 
