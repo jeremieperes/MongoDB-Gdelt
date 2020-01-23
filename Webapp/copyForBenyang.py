@@ -200,11 +200,11 @@ elif navigation == 'Question 4':
     # df_q4_final_1 = pd.DataFrame(df_q4_final, columns=["SQLDATE", "avg_AvgTone"])
     #
     # fig = px.line(df_q4_final_1, title='Average Tone Trend Between ' + country1 + ' and ' + country2)
-    fig1 = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"], title='Average Tone Trend Between ' + country1 + ' and ' + country2)
+    fig1 = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"], title='Average Tone Trend Between ' + country1 + ' -> ' + country2)
     st.plotly_chart(fig1)
 
     st.markdown("  ")
     st.markdown("Number of Articles:")
     fig2 = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["sum_NumArticles"],
-                   title='Average Tone Trend Between ' + country1 + ' and ' + country2)
+                   title='Number of Articles ' + country1 + ' -> ' + country2)
     st.plotly_chart(fig2)
