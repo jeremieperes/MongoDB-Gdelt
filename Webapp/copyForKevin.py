@@ -92,7 +92,7 @@ def iso(country):
 #########################################################################
 
 navigation = st.sidebar.radio("Navigation",('Home','Question 1', 'Question 2','Question 3', 'Question 4',))
-graph = st.sidebar.radio("Affichage graphique query 2",("Show graph q2",))
+graph = st.sidebar.radio("Affichage graphique query 2",("Oui","Non",))
 
 if navigation=='Home':
     st.markdown(r'''
@@ -134,7 +134,7 @@ elif navigation=='Question 2':
     day = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
 
-    if graph == "Show graph q2" :
+    if graph == "Oui" :
         db, collection = connect_mongo('query2')
         df_q2_temps = read_mongo(collection, {"Year": year, "Month": {"$regex" : "01|02|03"}})
         df = df_q2_temps.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
@@ -149,7 +149,7 @@ elif navigation=='Question 2':
 
 
     #df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
-    if graph == "Show graph q2" :
+    if graph == "Oui" :
         st.title("Pour aller plus loin ... ")
         fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[0,2000], width=800, height=800)
         st.plotly_chart(fig)
