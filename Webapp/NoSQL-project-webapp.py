@@ -104,11 +104,11 @@ elif navigation=='Question 3':
 
     source = st.sidebar.text_input('Source name','theguardian.com')
 
-    day = st.sidebar.multiselect('Day', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10',
+    day = st.sidebar.selectbox('Day', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10',
                                          '11','12','13','14','15','16','17','18','19','20',
                                          '21','22','23','24','25','26','27','28','29','30','31'])
-    month = st.sidebar.multiselect('Month', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10','11','12'])
-    year = st.sidebar.multiselect('Year', ['2019','2018'])
+    month = st.sidebar.selectbox('Month', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10','11','12'])
+    year = st.sidebar.selectbox('Year', ['2019','2018'])
 
     df_q3 = query3(source, year=year, month = month , day = day)
 
@@ -116,16 +116,23 @@ elif navigation=='Question 3':
     df_persons = df_q3.set_index('GKGRECORDID').join(df_q3.set_index('GKGRECORDID').Persons.apply(pd.Series).stack().reset_index(level=0).rename(columns={0:'Person'}).set_index('GKGRECORDID')).reset_index()
     df_countries =df_q3.set_index('GKGRECORDID').join(df_q3.set_index('GKGRECORDID').Countries.apply(pd.Series).stack().reset_index(level=0).rename(columns={0:'Country'}).set_index('GKGRECORDID')).reset_index()
 
-    st.markdown("Thèmes traitées par cette source :")
+    st.markdown("**Thèmes traitées par cette source :**")
     st.write(df_themes.Theme.value_counts())
-    fig = px.bar(x=df_themes.Theme.value_counts().index, y=df_themes.Theme.value_counts().Theme)
+    st.markdown("**Top 50:**")
+    fig = px.bar(x=df_themes.Theme.value_counts().index[:50], y=df_themes.Theme.value_counts().values[:50])
     st.plotly_chart(fig)
 
     st.markdown("Personnes traitées par cette source :")
     st.write(df_persons.Person.value_counts())
+    st.markdown("**Top 50:**")
+    fig = px.bar(x=df_persons.Person.value_counts().index[:50], y=df_persons.Person.value_counts().values[:50])
+    st.plotly_chart(fig)
 
     st.markdown("Pays traités par cette source :")
     st.write(df_countries.Country.value_counts())
+    st.markdown("**Top 50:**")
+    fig = px.bar(x=df_countries.Country.value_counts().index[:50], y=df_countries.Country.value_counts().values[:50])
+    st.plotly_chart(fig)
 
     st.markdown("Ton moyen :")
     tone_country = df_countries.groupby('Country').mean().reset_index()

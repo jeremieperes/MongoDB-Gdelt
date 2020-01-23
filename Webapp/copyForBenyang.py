@@ -59,6 +59,12 @@ def query3(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
     df_q3 = read_mongo(collection, query3_params)
     return df_q3
 
+def query4(country1, country2, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
+    db, collection = connect_mongo('query4')
+    query4_params =  {'Actor1Geo_CountryCode': country1, 'Actor2Geo_CountryCode': country2, "Year": year, "Month" : {"$regex": month}, "Day": {"$regex":day}}
+
+    df_q4 = read_mongo(collection, query4_params, no_id=False)
+    return df_q4
 #########################################################################
 ###########################    Visualization    #########################
 #########################################################################
@@ -103,8 +109,8 @@ elif navigation=='Question 3':
 
     source = st.sidebar.text_input('Source name','theguardian.com')
 
-    day = st.sidebar.selectbox('Day', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10',
-                                         '11','12','13','14','15','16','17','18','19','20',
+    day = st.sidebar.selectbox('Day', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10', \
+                                         '11','12','13','14','15','16','17','18','19','20', \
                                          '21','22','23','24','25','26','27','28','29','30','31'])
     month = st.sidebar.selectbox('Month', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10','11','12'])
     year = st.sidebar.selectbox('Year', ['2019','2018'])
@@ -150,4 +156,11 @@ elif navigation=='Question 3':
 
 elif navigation=='Question 4':
 	st.markdown("Pays traités par cette source :")
+    day = st.sidebar.selectbox('Day', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10',
+                                         '11','12','13','14','15','16','17','18','19','20',
+                                         '21','22','23','24','25','26','27','28','29','30','31'])
+    month = st.sidebar.selectbox('Month', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10','11','12'])
+    year = st.sidebar.selectbox('Year', ['2019','2018'])
+
+    df_q3 = query3(source, year=year, month = month , day = day)
     
