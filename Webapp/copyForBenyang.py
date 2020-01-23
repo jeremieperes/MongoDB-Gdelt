@@ -176,7 +176,7 @@ elif navigation == 'Question 4':
 
     st.markdown("Aggrégations sur jour: ")
     country1 = st.sidebar.selectbox('Country1', ['US', 'CH', 'FR', 'GB', 'CN', 'JP'])
-    country2 = st.sidebar.selectbox('Country2', ['CH', 'US', 'FR', 'GB', 'CN', 'JP'])
+    country2 = st.sidebar.selectbox('Country2', ['FR', 'US', 'CH', 'GB', 'CN', 'JP'])
     day = st.sidebar.selectbox('Day',
                                ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12',
                                 '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26',
