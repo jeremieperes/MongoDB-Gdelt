@@ -160,6 +160,7 @@ elif navigation=='Question 3':
     fig = px.bar(x=df_themes.Theme.value_counts().index[:10], y=df_themes.Theme.value_counts().values[:10])
     st.plotly_chart(fig)
 
+    country.dropna(inplace=True)
     st.write(country)
 
     def iso(country):
