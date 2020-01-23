@@ -182,3 +182,4 @@ elif navigation == 'Question 4':
     year = st.sidebar.selectbox('Year', ['2019', '2018'])
 
     df_q4 = query4('US', 'CH', year=year, month=month, day=day)
+    st.dataframe(df_q4)
