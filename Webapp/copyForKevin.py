@@ -121,7 +121,7 @@ elif navigation=='Question 2':
 
 
     source = st.sidebar.text_input('Pays :', "FR")
-    year = st.sidebar.selectbox("Année :", "2019")
+    year = st.sidebar.selectbox("Année :", ["2018","2019","2017","2020"])
     month = st.sidebar.multiselect("Mois :", ["[0-9][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12"])
     day = st.sidebar.selectbox("Jour :", ["[0-9][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
