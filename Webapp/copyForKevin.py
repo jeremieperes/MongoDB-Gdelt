@@ -104,7 +104,7 @@ elif navigation=='Question 1':
 elif navigation=='Question 2':
     print("")
     df = px.data.gapminder()
-    fig = px.choropleth(df, locations="iso_alpha", color="lifeExp", hover_name="country", animation_frame="year", range_color=[20,80], width=800, height=400)
+    fig = px.choropleth(df, locations="iso_alpha", color="lifeExp", hover_name="country", animation_frame="year", range_color=[20,80], width=2800, height=2400)
     st.plotly_chart(fig)
     print("")
 
