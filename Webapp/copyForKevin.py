@@ -13,7 +13,7 @@ import time
 import os.path
 
 st.title('Projet NoSQL')
-
+first = True
 #########################################################################
 #############################    Functions    ###########################
 #########################################################################
@@ -120,7 +120,7 @@ if navigation=='Home':
 elif navigation=='Question 1':
     print("")
 
-first = True
+
 elif navigation=='Question 2':
     print("")
     #db, collection = connect_mongo('query2')
