@@ -115,7 +115,7 @@ elif navigation=='Question 1':
 elif navigation=='Question 2':
     print("")
     db, collection = connect_mongo('query2')
-    df_q2 = read_mongo(collection, {""})
+    df_q2 = read_mongo(collection, {})
 
 
     source = st.sidebar.selectbox('Pays :', df_q2["ActionGeo_CountryCode"].unique())
