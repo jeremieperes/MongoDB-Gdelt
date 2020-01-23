@@ -146,7 +146,7 @@ elif navigation=='Question 2':
     st.markdown("/n/n Pour aller plus loin ... /n/n ")
     print("")
     #df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
-    fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[0,3000], width=800, height=800)
+    fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[0,30000], width=800, height=800)
     st.plotly_chart(fig)
 
 
