@@ -126,7 +126,7 @@ elif navigation=='Question 2':
     #db, collection = connect_mongo('query2')
     #df_q2 = read_mongo(collection, {})
 
-
+    st.markdown("Pour un pays donné en paramètre, affichez les évènements qui y ont eu place triées par le nombre de mentions (tri décroissant); permettez une agrégation par jour/mois/année")
     source = st.sidebar.text_input('Pays :', "FR")
     year = st.sidebar.selectbox("Année :", ["2018","2019"])
     month = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
@@ -135,7 +135,7 @@ elif navigation=='Question 2':
 
 
     db, collection = connect_mongo('query2')
-    df_q2_temps = read_mongo(collection, {"Year": "2018"})
+    df_q2_temps = read_mongo(collection, {"Year": "2019", "Month": ["01","02"]})
     df = df_q2_temps.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
     df['iso']=df['ActionGeo_CountryCode'].apply(iso)
 
