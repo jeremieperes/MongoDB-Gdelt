@@ -135,7 +135,7 @@ elif navigation=='Question 2':
 
 
     db, collection = connect_mongo('query2')
-    df_q2_temps = read_mongo(collection, {"Year": year, "Month": {"$regex" : "01|02|03"}})
+    df_q2_temps = read_mongo(collection, {"Year": year, "Month": {"$regex" : "01|02"}})
     df = df_q2_temps.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
     df['iso']=df['ActionGeo_CountryCode'].apply(iso)
 
