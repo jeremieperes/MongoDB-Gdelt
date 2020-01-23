@@ -115,7 +115,7 @@ elif navigation=='Question 1':
 
     if country1 == "":
         st.markdown("**Couverture médiatique:**")
-        fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[3,6], color_continuous_scale="RdYlGn")
+        fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[4,6], color_continuous_scale="RdYlGn")
         st.plotly_chart(fig)
 
         st.markdown("**Top 10 pays:**")
