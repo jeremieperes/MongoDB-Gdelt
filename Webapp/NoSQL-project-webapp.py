@@ -9,6 +9,7 @@ import json
 import re
 import time
 import pycountry
+from iso3166 import countries
 import os.path
 
 st.title('Projet NoSQL')
@@ -100,7 +101,7 @@ elif navigation=='Question 2':
 
 elif navigation=='Question 3':
 
-    st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
+    st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
 
     source = st.sidebar.text_input('Source name','theguardian.com')
 
@@ -120,6 +121,32 @@ elif navigation=='Question 3':
     tone_person = df_persons.groupby('Person').mean().reset_index()
     tone_theme = df_themes.groupby('Theme').mean().reset_index()
 
+    st.markdown("**Pays traités par cette source :**")
+
+    country = tone_country.set_index('Country').join(df_countries.Country.value_counts())
+    country = country.rename(columns={'Country':'Number of articles'})
+    country.reset_index(inplace=True)
+
+    fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
+    st.plotly_chart(fig)
+
+    st.markdown("**Top 10:**")
+    fig = px.bar(x=df_countries.Country.value_counts().index[:10], y=df_countries.Country.value_counts().values[:10])
+    st.plotly_chart(fig)
+
+    st.markdown("**Personnes traitées par cette source :**")
+
+    person = tone_person.set_index('Person').join(df_persons.Person.value_counts())
+    person = person.rename(columns={'Person':'Number of articles'})
+    person.reset_index(inplace=True)
+
+    fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
+    st.plotly_chart(fig)
+
+    st.markdown("**Top 10:**")
+    fig = px.bar(x=df_persons.Person.value_counts().index[:10], y=df_persons.Person.value_counts().values[:10])
+    st.plotly_chart(fig)
+
     st.markdown("**Thèmes traitées par cette source :**")
 
     theme = tone_theme.set_index('Theme').join(df_themes.Theme.value_counts())
@@ -133,36 +160,11 @@ elif navigation=='Question 3':
     fig = px.bar(x=df_themes.Theme.value_counts().index[:10], y=df_themes.Theme.value_counts().values[:10])
     st.plotly_chart(fig)
 
-    st.markdown("Personnes traitées par cette source :")
+    country['iso']=country['Country'].apply(lambda x: pycountry.countries.get(alpha_2=x.values).alpha_3)
+    st.write(country)
 
-    person = tone_person.set_index('Person').join(df_persons.Person.value_counts())
-    person = person.rename(columns={'Person':'Number of articles'})
-    person.reset_index(inplace=True)
+    #fig = px.choropleth(country, locations="Country", color="Tone", range_color=[20,80])
 
-    fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
-    st.plotly_chart(fig)
-
-    st.markdown("**Top 10:**")
-    fig = px.bar(x=df_persons.Person.value_counts().index[:10], y=df_persons.Person.value_counts().values[:10])
-    st.plotly_chart(fig)
-
-    st.markdown("Pays traités par cette source :")
-
-    country = tone_country.set_index('Country').join(df_countries.Country.value_counts())
-    country = country.rename(columns={'Country':'Number of articles'})
-    country.reset_index(inplace=True)
-
-    fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
-    st.plotly_chart(fig)
-
-    st.markdown("**Top 10:**")
-    fig = px.bar(x=df_countries.Country.value_counts().index[:10], y=df_countries.Country.value_counts().values[:10])
-    st.plotly_chart(fig)
-
-
-
-
-    #fig = px.choropleth(tone_country, locations="Country", color="Tone", range_color=[20,80])
 
     #themes = st.sidebar.multiselect('Themes', df_themes['Theme'].unique())
     #country = st.sidebar.multiselect('Countries', df_countries['Country'].unique())
