@@ -1,4 +1,5 @@
 import streamlit as st
+from pymongo import MongoClient
 import pandas as pd
 import numpy as np
 import plotly_express as px
@@ -15,7 +16,56 @@ st.title('Projet NoSQL')
 #############################    Functions    ###########################
 #########################################################################
 
+def connect_mongo(collection_name):
 
+    client = MongoClient("mongodb://gdeltuser:gdeltpass@ec2-15-188-82-40.eu-west-3.compute.amazonaws.com:27017,ec2-15-188-185-108.eu-west-3.compute.amazonaws.com:27017,ec2-35-180-90-165.eu-west-3.compute.amazonaws.com:27017/gdelt." + collection_name + "?replicaSet=rsGdelt", readPreference='primaryPreferred')
+
+    db = client['gdelt']
+    collection = db[collection_name]
+    return db, collection
+
+def read_mongo(collection, query={}, no_id=True):
+    """ Read from Mongo and Store into DataFrame """
+
+    # Make a query to the specific DB and Collection
+    cursor = collection.find(query)
+
+    # Expand the cursor and construct the DataFrame
+    df =  pd.DataFrame(list(cursor))
+
+    # Delete the _id
+    if no_id:
+        del df['_id']
+
+    return df
+
+def filter_q3(df, themes, country, city, persons, day, month, year):
+    filtered_df = df.copy()
+    if len(themes) != 0 :
+        filtered_df = filtered_df[(filtered_df['Themes'].isin(themes))]
+        mode ='city'
+    if len(country) != 0:
+        filtered_df = filtered_df[(filtered_df['Country'].isin(country))]
+    if len(city) != 0:
+        filtered_df = filtered_df[filtered_df['City'].isin(city)]
+    if len(persons) != 0:
+        filtered_df = filtered_df[filtered_df['Persons'].isin(persons)]
+    if len(day) != 0:
+        filtered_df = filtered_df[(filtered_df['Day'].isin(day))]
+    if len(month) != 0:
+        filtered_df = filtered_df[filtered_df['Month'].isin(month)]
+    if len(year) != 0:
+        filtered_df = filtered_df[filtered_df['year'].isin(year)]
+    return filtered_df
+
+#########################################################################
+#############################    Queries    ###########################
+#########################################################################
+
+def query3(source) :
+    db, collection = connect_mongo('query3')
+    df_q3 = read_mongo(collection, {'SourceCommonName':source})
+    return df_q3
 
 #########################################################################
 ###########################    Visualization    #########################
@@ -56,8 +106,30 @@ elif navigation=='Question 2':
 
 
 elif navigation=='Question 3':
-    print("")
 
+    st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
+
+    source = st.text_input('Source name', 'theguardian.com')
+
+    df_q3 = query3(source).copy()
+
+    df_q3.nunique()
+
+    themes = st.sidebar.multiselect('Themes', df_q3['Themes'].unique())
+    country = st.sidebar.multiselect('Country', df_q3['Country'].unique())
+    city = st.sidebar.multiselect('City', df_q3['City'].unique())
+    persons = st.sidebar.multiselect('Persons', df_q3['Persons'].unique())
+    day = st.sidebar.multiselect('Day', df_q3['Day'].unique())
+    month = st.sidebar.multiselect('Month', df_q3['Month'].unique())
+    year = st.sidebar.multiselect('Year', df_q3['Year'].unique())
+
+    df_filtered_q3 = filter_q3(df, themes, country, city, persons, day, month, year)
+
+    st.markdown("Nombre d'articles :")
+    df_filtered_q3.GKGRECORDID.nunique()
+
+    st.markdown('Ton moyen des articles:')
+    df_filtered_q3.groupby('GKGRECORDID').max().Tone.mean()
 
 elif navigation=='Question 4':
     print("")
