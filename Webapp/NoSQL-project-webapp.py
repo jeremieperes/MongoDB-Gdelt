@@ -126,8 +126,11 @@ elif navigation=='Question 3':
 
     st.markdown("Ton moyen :")
     tone_country = df_countries.groupby('Country').mean().reset_index()
+    st.write(tone_country)
     tone_person = df_persons.groupby('Person').mean().reset_index()
+    st.write(tone_person)
     tone_theme = df_themes.groupby('Theme').mean().reset_index()
+    st.write(tone_theme)
 
     fig = px.choropleth(tone_country, locations="Country", color="Tone", range_color=[20,80])
     st.plotly_chart(fig)
