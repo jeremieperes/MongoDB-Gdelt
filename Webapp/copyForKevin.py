@@ -3,6 +3,8 @@ from pymongo import MongoClient
 import pandas as pd
 import numpy as np
 import plotly_express as px
+import pycountry
+
 import plotly.graph_objects as go
 import copy
 import json
@@ -119,13 +121,18 @@ elif navigation=='Question 2':
 
 
     source = st.sidebar.text_input('Pays :', "FR")
-    #source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
-    df_q2 = query2(source).copy()
+    year = st.sidebar.selectbox("Année :", "2019")
+    month = st.sidebar.multiselect("Mois :", ["[0-9][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12"])
+    day = st.sidebar.selectbox("Jour :", ["[0-9][0-9]","01","02","03", "04","05","06","07","08","09","10","11","12",
+                                          "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
+
+#source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
+    df_q2 = query2(source, year=year, month=month, day=day).copy()
     st.dataframe(df_q2)
     #df = px.data.gapminder()
     # df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).count()
     fig = px.choropleth(df_q2, locations="ActionGeo_CountryCode", color="numMentions", animation_frame="Month", range_color=[20,80], width=800, height=800)
-    # st.plotly_chart(fig)
+    st.plotly_chart(fig)
     print("")
 
 
