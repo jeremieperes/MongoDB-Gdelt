@@ -40,26 +40,6 @@ def read_mongo(collection, query={}, no_id=True):
 
     return df
 
-def filter_q3(df, day, month, year):
-    filtered_df = df.copy()
-    if len(day) != 0:
-        filtered_df = filtered_df[(filtered_df['Day'].isin(day))]
-    if len(month) != 0:
-        filtered_df = filtered_df[filtered_df['Month'].isin(month)]
-    if len(year) != 0:
-        filtered_df = filtered_df[filtered_df['Year'].isin(year)]
-    return filtered_df
-
-#########################################################################
-#############################    Queries    ###########################
-#########################################################################
-
-def query3(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
-    db, collection = connect_mongo('query3')
-    query3_params =  {'SourceCommonName':source, "Year": year, "Month" : {"$regex": month}, "Day": {"$regex":day}}
-    df_q3 = read_mongo(collection, query3_params)
-    return df_q3
-
 #########################################################################
 ###########################    Visualization    #########################
 #########################################################################
@@ -91,14 +71,40 @@ if navigation=='Home':
     ''')
 
 elif navigation=='Question 1':
-    print("")
 
+    def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="FR", language="eng"):
+        _, collection_q1 = connect_mongo('query1')
+        query1_params = {"jour": {"$regex": year + month + day}, "pays": country, "langue": language}
+        df_q1 = read_mongo(collection_q1, query1_params)
+        return df_q1
+
+    st.markdown(
+        "Afficher le nombre d’articles/évènements qu’il y a eu pour chaque triplet (jour, pays de l’évènement, langue de l’article).")
+
+    day1 = st.sidebar.selectbox('Day', ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
+                                       '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+                                       '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'])
+    month1 = st.sidebar.selectbox('Month',
+                                 ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
+    year1 = st.sidebar.selectbox('Year', ['2019', '2018'])
+
+    country1 = st.sidebar.text_input("Country", "FR")
+    language1 = st.sidebar.text_input("language", "eng")
+
+    df_q1 = query1(year=year1, month=month1, day=day1, country=country1, language=language1)
+    st.dataframe(df_q1)
 
 elif navigation=='Question 2':
     print("")
 
 
 elif navigation=='Question 3':
+
+    def query3(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
+        db, collection = connect_mongo('query3')
+        query3_params =  {'SourceCommonName':source, "Year": year, "Month" : {"$regex": month}, "Day": {"$regex":day}}
+        df_q3 = read_mongo(collection, query3_params)
+        return df_q3
 
     st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
 
