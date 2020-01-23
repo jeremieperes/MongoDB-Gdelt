@@ -115,15 +115,16 @@ elif navigation=='Question 1':
 elif navigation=='Question 2':
     print("")
     db, collection = connect_mongo('query2')
-    #df_q2 = read_mongo(collection, {})
+    df_q2 = read_mongo(collection, {""})
 
 
-    #source = st.sidebar.selectbox('Pays :', df_q2["ActionGeo_CountryCode"].unique())
-    source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
+    source = st.sidebar.selectbox('Pays :', df_q2["ActionGeo_CountryCode"].unique())
+    #source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
     df_q2 = query2(source).copy()
     st.dataframe(df_q2)
-    df = px.data.gapminder()
-    fig = px.choropleth(df, locations="iso_alpha", color="lifeExp", hover_name="country", animation_frame="year", range_color=[20,80], width=800, height=800)
+    #df = px.data.gapminder()
+    df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).count()
+    fig = px.choropleth(df, locations="ActionGeo_CountryCode", color="numMentions", hover_name="ActionGeo_CountryCode", animation_frame="Month", range_color=[20,80], width=800, height=800)
     st.plotly_chart(fig)
     print("")
 
