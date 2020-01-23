@@ -129,6 +129,20 @@ elif navigation=='Question 3':
     fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
     st.plotly_chart(fig)
 
+    country.dropna(inplace=True)
+
+    def iso(country):
+        pays = pycountry.countries.get(alpha_2=country.upper())
+        if pays is not None:
+            return pays.alpha_3
+        else:
+            return ''
+
+    country['iso']=country['Country'].apply(iso)
+
+    fig = px.choropleth(country, locations="iso", color="Tone", range_color=[-10,10], color_continuous_scale="RdYlGn")
+    st.plotly_chart(fig)
+
     st.markdown("**Top 10:**")
     fig = px.bar(x=df_countries.Country.value_counts().index[:10], y=df_countries.Country.value_counts().values[:10])
     st.plotly_chart(fig)
@@ -158,21 +172,6 @@ elif navigation=='Question 3':
 
     st.markdown("**Top 10:**")
     fig = px.bar(x=df_themes.Theme.value_counts().index[:10], y=df_themes.Theme.value_counts().values[:10])
-    st.plotly_chart(fig)
-
-    country.dropna(inplace=True)
-    st.write(country)
-
-    def iso(country):
-        pays = pycountry.countries.get(alpha_2=country.upper())
-        if pays is not None:
-            return pays.alpha_3
-        else:
-            return ''
-
-    country['iso']=country['Country'].apply(iso)
-
-    fig = px.choropleth(country, locations="iso", color="Tone", range_color=[-10,10], color_continuous_scale="RdYlGn")
     st.plotly_chart(fig)
 
 elif navigation=='Question 4':
