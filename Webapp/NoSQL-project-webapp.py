@@ -165,9 +165,12 @@ elif navigation=='Question 3':
 
     def iso(country):
         pays = pycountry.countries.get(alpha_2=country.upper())
-        return pays.alpha_3
+        if pays is not None:
+            return pays.alpha_3
+        else:
+            return ''
 
-    country['iso']=country['Country'].apply(iso, axis=1)
+    country['iso']=country['Country'].apply(iso)
     st.write(country)
 
     #fig = px.choropleth(country, locations="Country", color="Tone", range_color=[20,80])
