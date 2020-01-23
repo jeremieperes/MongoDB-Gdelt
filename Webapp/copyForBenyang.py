@@ -194,6 +194,7 @@ elif navigation == 'Question 4':
     df_q4_final = df_q4_final.reset_index(drop=True)
     st.dataframe(df_q4_final)
 
-    st.markdown("**Graph:**")
+    st.markdown("  ")
+    st.markdown("**AvgTone Trend to show the relationship:**")
     fig = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"])
     st.plotly_chart(fig)
