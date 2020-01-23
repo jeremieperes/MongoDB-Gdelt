@@ -13,7 +13,7 @@ import time
 import os.path
 
 st.title('Projet NoSQL')
-first = True 
+first = True
 #########################################################################
 #############################    Functions    ###########################
 #########################################################################
@@ -133,11 +133,13 @@ elif navigation=='Question 2':
     day = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
     if first :
-        df_q2_temps = query2({}, year=year).copy()
+        #df_q2_temps = query2({}, year=year).copy()
+        db, collection = connect_mongo('query2')
+        df_q2_temps = read_mongo(collection, {"Year": year})
         df = df_q2_temps.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
         df['iso']=df['ActionGeo_CountryCode'].apply(iso)
         first = False
-#source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
+    #source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
     df_q2 = query2(source, year=year, month=month, day=day).copy()
     st.dataframe(df_q2)
     #df = px.data.gapminder()
