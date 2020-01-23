@@ -116,16 +116,23 @@ elif navigation=='Question 3':
     df_persons = df_q3.set_index('GKGRECORDID').join(df_q3.set_index('GKGRECORDID').Persons.apply(pd.Series).stack().reset_index(level=0).rename(columns={0:'Person'}).set_index('GKGRECORDID')).reset_index()
     df_countries =df_q3.set_index('GKGRECORDID').join(df_q3.set_index('GKGRECORDID').Countries.apply(pd.Series).stack().reset_index(level=0).rename(columns={0:'Country'}).set_index('GKGRECORDID')).reset_index()
 
-    st.markdown("Thèmes traitées par cette source :")
+    st.markdown("**Thèmes traitées par cette source :**")
     st.write(df_themes.Theme.value_counts())
-    fig = px.bar(x=df_themes.Theme.value_counts().index, y=df_themes.Theme.value_counts().values)
+    st.markdown("**Top 50:**")
+    fig = px.bar(x=df_themes.Theme.value_counts().index[:50], y=df_themes.Theme.value_counts().values[:50])
     st.plotly_chart(fig)
 
     st.markdown("Personnes traitées par cette source :")
     st.write(df_persons.Person.value_counts())
+    st.markdown("**Top 50:**")
+    fig = px.bar(x=df_persons.Person.value_counts().index[:50], y=df_persons.Person.value_counts().values[:50])
+    st.plotly_chart(fig)
 
     st.markdown("Pays traités par cette source :")
     st.write(df_countries.Country.value_counts())
+    st.markdown("**Top 50:**")
+    fig = px.bar(x=df_countries.Country.value_counts().index[:50], y=df_countries.Country.value_counts().values[:50])
+    st.plotly_chart(fig)
 
     st.markdown("Ton moyen :")
     tone_country = df_countries.groupby('Country').mean().reset_index()
