@@ -114,7 +114,8 @@ elif navigation=='Question 1':
         st.plotly_chart(fig)
 
     if country1 == "":
-        fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[0,50], color_continuous_scale="RdYlGn")
+        st.markdown("**Couverture médiatique:**")
+        fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[df_q1_agg["Couverture médiatique"].min(),df_q1_agg["Couverture médiatique"].max()], color_continuous_scale="RdYlGn")
         st.plotly_chart(fig)
 
         st.markdown("**Top 10 pays:**")
@@ -178,7 +179,7 @@ elif navigation=='Question 3':
 
     country['iso']=country['Country'].apply(iso)
 
-    fig = px.choropleth(country, locations="iso", color="Tone", range_color=[-10,10], color_continuous_scale="RdYlGn")
+    fig = px.choropleth(country, locations="iso", color="Tone", range_color=[country.Tone.min(),country.Tone.max()], color_continuous_scale="RdYlGn")
     st.plotly_chart(fig)
 
     st.markdown("**Top 10:**")
