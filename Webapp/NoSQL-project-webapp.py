@@ -123,7 +123,7 @@ elif navigation=='Question 3':
     month = st.sidebar.multiselect('Month', df_q3['Month'].unique())
     year = st.sidebar.multiselect('Year', df_q3['Year'].unique())
 
-    df_filtered_q3 = filter_q3(df, themes, country, city, persons, day, month, year)
+    df_filtered_q3 = filter_q3(df_q3, themes, country, city, persons, day, month, year)
 
     st.markdown("Nombre d'articles :")
     df_filtered_q3.GKGRECORDID.nunique()
