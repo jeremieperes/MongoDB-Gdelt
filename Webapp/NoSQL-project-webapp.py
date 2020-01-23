@@ -133,10 +133,10 @@ elif navigation=='Question 3':
     tone_theme = df_themes.groupby('Theme').mean().reset_index()
     st.write(tone_theme)
 
-    def iso (country):
+    def iso(country):
         return pycountry.countries.get(alpha_2=country).alpha_3
 
-    tone_country['ISO'] = tone_country.apply(lambda x: pycountry.countries.get(alpha_2=x.Country).alpha_3, axis=1)
+    tone_country['ISO'] = tone_country.Country.apply(iso, axis=1)
 
     fig = px.choropleth(tone_country, locations="ISO", color="Tone", range_color=[20,80])
     st.plotly_chart(fig)
