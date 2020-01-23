@@ -118,7 +118,7 @@ elif navigation=='Question 3':
 
     st.markdown("Thèmes traitées par cette source :")
     st.write(df_themes.Theme.value_counts())
-    fig = px.bar(x=df_themes.Theme.value_counts().index, y=df_themes.Theme.value_counts().Theme)
+    fig = px.bar(x=df_themes.Theme.value_counts().index, y=df_themes.Theme.value_counts().values)
     st.plotly_chart(fig)
 
     st.markdown("Personnes traitées par cette source :")
