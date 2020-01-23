@@ -118,7 +118,7 @@ elif navigation=='Question 1':
         st.plotly_chart(fig)
 
         st.markdown("**Top 10 pays:**")
-        fig = px.bar(df_q1[df_q1[]], x="pays", y="numArticles")
+        fig = px.bar(df_q1, x="pays", y="numArticles")
         st.plotly_chart(fig)
 
     st.markdown("**Top 10 langues:**")
