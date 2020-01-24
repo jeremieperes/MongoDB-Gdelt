@@ -120,6 +120,7 @@ elif navigation=='Question 1':
     st.markdown(
         "Afficher le nombre d’articles/évènements qu’il y a eu pour chaque triplet (jour, pays de l’évènement, langue de l’article).")
 
+    graph = st.sidebar.checkbox("Afficher graphiques",False)
     month1 = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
     day1 = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
@@ -127,7 +128,6 @@ elif navigation=='Question 1':
     year1 = st.sidebar.selectbox('Year', ['2019', '2018'])
     country1 = st.sidebar.text_input("Country")
     language1 = st.sidebar.text_input("language")
-    graph = st.sidebar.checkbox("Afficher graphiques")
 
     df_q1 = query1(year=year1, month=month1, day=day1, country=country1, language=language1)
 
@@ -138,7 +138,7 @@ elif navigation=='Question 1':
 
     df_q1_agg_country['Couverture médiatique'] = df_q1_agg_country.numArticles / df_q1_agg_country.numEvent
 
-    st.dataframe(df_q1, height=500)
+    st.dataframe(df_q1)
 
     if graph:
 
@@ -166,11 +166,11 @@ elif navigation=='Question 2':
 
     st.markdown("Pour un pays donné en paramètre, affichez les évènements qui y ont eu place triées par le nombre de mentions (tri décroissant); permettez une agrégation par jour/mois/année")
     source = st.sidebar.text_input('Pays :', "FR")
+    graph = st.sidebar.checkbox("Afficher graphiques",False)
     year = st.sidebar.selectbox("Année :", ["2018","2019"])
     month = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
     day = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
-    graph = st.sidebar.checkbox("Afficher graphiques")
 
     if graph :
         db, collection = connect_mongo('query2')
@@ -196,15 +196,13 @@ elif navigation=='Question 3':
     st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
 
     source = st.sidebar.text_input('Source name','theguardian.com')
-
+    graph = st.sidebar.checkbox("Afficher graphiques",False)
     month = st.sidebar.multiselect("Month", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
     day = st.sidebar.multiselect("Day", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                       "13","14","15", "16","17","18","19","20","21","22","23","24",
                                       "25","26","27","28", "29", "30"])
 
     year = st.sidebar.selectbox('Year', ['2019','2018'])
-    graph = st.sidebar.checkbox("Afficher graphiques")
-
 
     df_q3 = query3(source, year=year, month = month , day = day)
 
@@ -237,9 +235,10 @@ elif navigation=='Question 3':
 
     #fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
     #st.plotly_chart(fig)
+    country['iso']=country['Country'].apply(iso)
+
     if graph :
         st.markdown("**Ton moyen par pays :**")
-        country['iso']=country['Country'].apply(iso)
 
         fig = px.choropleth(country, locations="iso", color="Tone", range_color=[-10,10],
                             color_continuous_scale="RdYlGn")
