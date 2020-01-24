@@ -84,6 +84,17 @@ def query3(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
     df_q3 = read_mongo(collection, query3_params)
     return df_q3
 
+def query4(country1, country2, year="2019", month="[0-9][0-9]", day="[0-9][0-9]"):
+    db, collection = connect_mongo('query4')
+    if type(month) == list :
+        month = "|".join(month)
+    if type(day) == list :
+        day = "|".join(day)
+    query4_params = {'Actor1Geo_CountryCode': country1, 'Actor2Geo_CountryCode': country2, "Year": year,
+                     "Month": {"$regex": month}, "Day": {"$regex": day}}
+
+    df_q4 = read_mongo(collection, query4_params, no_id=False)
+    return df_q4
 #########################################################################
 ###########################    Visualization    #########################
 #########################################################################
@@ -257,4 +268,40 @@ elif navigation=='Question 3':
     st.plotly_chart(fig)
 
 elif navigation=='Question 4':
+
+    st.markdown("dresser la cartographie des relations entre les pays d’après le ton des articles : pour chaque paire (pays1, pays2), calculer le nombre d’article, le ton moyen (aggrégations sur Année/Mois/Jour, filtrage par pays ou carré de coordonnées)")
+
+    st.markdown("Aggrégations sur jour: ")
+    country1 = st.sidebar.selectbox('Country1', ['US', 'CH', 'FR', 'GB', 'CN', 'JP'])
+    country2 = st.sidebar.selectbox('Country2', ['FR', 'US', 'CH', 'GB', 'CN', 'JP'])
+
+    year = st.sidebar.selectbox("Année :", ["2018","2019"])
+    month = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
+    day = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
+                                            "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
+    
+    df_q4 = query4(country1=country1, country2=country2, year=year, month=month, day=day)
+    df_q4_final = pd.DataFrame(df_q4,
+                               columns=['Year', 'Month', 'Day', 'Actor1Geo_CountryCode', 'Actor2Geo_CountryCode', 'avg_AvgTone',
+                                        'sum_NumArticles', 'min_Actor1Geo_Long', 'min_Actor1Geo_lat', 'max_Actor1Geo_Long', 'max_Actor1Geo_Lat', 'min_Actor2Geo_Long', 'min_Actor2Geo_lat', 'max_Actor2Geo_Long', 'max_Actor2Geo_Lat', 'SQLDATE'])
+    df_q4_final['SQLDATE'] = df_q4_final['SQLDATE'].astype('datetime64[ns]')
+    df_q4_final = df_q4_final.sort_values(by=['Year', 'Month', 'Day'])
+    df_q4_final = df_q4_final.reset_index(drop=True)
+    st.dataframe(df_q4_final)
+
+    st.markdown("  ")
+    st.markdown("Average Tone Trend to show the relationship:")
+    # fig = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"])
+    # df_q4_final_1 = pd.DataFrame(df_q4_final, columns=["SQLDATE", "avg_AvgTone"])
+    #
+    # fig = px.line(df_q4_final_1, title='Average Tone Trend Between ' + country1 + ' and ' + country2)
+    fig1 = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["avg_AvgTone"], title='Average Tone Trend Between ' + country1 + ' -> ' + country2)
+    st.plotly_chart(fig1)
+
+    st.markdown("  ")
+    st.markdown("Number of Articles:")
+    fig2 = px.line(x=df_q4_final["SQLDATE"], y=df_q4_final["sum_NumArticles"],
+                   title='Number of Articles ' + country1 + ' -> ' + country2)
+    st.plotly_chart(fig2)
+
     print("")
