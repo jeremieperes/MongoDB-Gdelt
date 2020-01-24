@@ -127,7 +127,7 @@ elif navigation=='Question 1':
 
     df_q1_agg['Couverture médiatique'] = df_q1_agg.numArticles / df_q1_agg.numEvent
 
-    st.dataframe(df_q1, height=500)
+    #st.dataframe(df_q1, height=500)
 
     if country1 != "":
         st.markdown("Nombre d'articles selon le nombre d'événement")
@@ -136,15 +136,15 @@ elif navigation=='Question 1':
 
     if country1 == "":
         st.markdown("**Couverture médiatique:**")
-        fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[4,6], color_continuous_scale="RdYlGn")
+        fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[4.5,7], color_continuous_scale="RdYlGn")
         st.plotly_chart(fig)
 
         st.markdown("**Top 10 pays:**")
-        fig = px.bar(df_q1, x="pays", y="numArticles")
+        fig = px.bar(df_q1.sort_values("numArticles", ascending=False)[:10], x="pays", y="numArticles")
         st.plotly_chart(fig)
 
     st.markdown("**Top 10 langues:**")
-    fig = px.bar(x=df_q1.langue, y=df_q1.numArticles)
+    fig = px.bar(df_q1.sort_values("numArticles", ascending=False)[:10], x='langue', y='numArticles')
     st.plotly_chart(fig)
 
 
