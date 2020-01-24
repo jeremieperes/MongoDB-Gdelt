@@ -1,6 +1,6 @@
 # GDELT Exploration
 
-Projet réalisé dans le cadre de notre formation Mastère Spécialisé BigData 2019/2020 par : 
+Projet réalisé dans le cadre de notre formation Mastère Spécialisé BigData 2019/2020 à Télécom Paris par : 
 - Li XU
 - Benyang SUN
 - Jérémie PERES
