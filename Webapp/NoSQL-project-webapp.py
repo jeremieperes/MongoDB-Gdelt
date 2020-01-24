@@ -180,17 +180,10 @@ elif navigation=='Question 3':
     country = country.rename(columns={'Country':'Number of articles'})
     country.reset_index(inplace=True)
 
-    fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
-    st.plotly_chart(fig)
+    #fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
+    #st.plotly_chart(fig)
 
     country.dropna(inplace=True)
-
-    def iso(country):
-        pays = pycountry.countries.get(alpha_2=country.upper())
-        if pays is not None:
-            return pays.alpha_3
-        else:
-            return ''
 
     country['iso']=country['Country'].apply(iso)
 
@@ -207,8 +200,8 @@ elif navigation=='Question 3':
     person = person.rename(columns={'Person':'Number of articles'})
     person.reset_index(inplace=True)
 
-    fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
-    st.plotly_chart(fig)
+    #fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
+    #st.plotly_chart(fig)
 
     st.markdown("**Top 10:**")
     fig = px.bar(x=df_persons.Person.value_counts().index[:10], y=df_persons.Person.value_counts().values[:10])
