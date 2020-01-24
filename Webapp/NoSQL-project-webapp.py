@@ -174,7 +174,7 @@ elif navigation=='Question 2':
     st.markdown("Pour un pays donné en paramètre, affichez les évènements qui y ont eu place triées par le nombre de mentions (tri décroissant); permettez une agrégation par jour/mois/année")
     source = st.sidebar.text_input('Pays :', "FR")
     graph = st.sidebar.checkbox("Afficher graphiques",False)
-    year = st.sidebar.selectbox("Année :", ["2018","2019"])
+    year = st.sidebar.selectbox("Année :", ["2019","2018"])
     month = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
     day = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
@@ -275,11 +275,11 @@ elif navigation=='Question 4':
     country1 = st.sidebar.selectbox('Country1', ['US', 'CH', 'FR', 'GB', 'CN', 'JP'])
     country2 = st.sidebar.selectbox('Country2', ['FR', 'US', 'CH', 'GB', 'CN', 'JP'])
 
-    year = st.sidebar.selectbox("Année :", ["2018","2019"])
+    year = st.sidebar.selectbox("Année :", ["2019","2018"])
     month = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
     day = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                             "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
-    
+
     df_q4 = query4(country1=country1, country2=country2, year=year, month=month, day=day)
     df_q4_final = pd.DataFrame(df_q4,
                                columns=['Year', 'Month', 'Day', 'Actor1Geo_CountryCode', 'Actor2Geo_CountryCode', 'avg_AvgTone',
