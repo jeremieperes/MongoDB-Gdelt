@@ -17,7 +17,7 @@ st.title('Projet GDELT')
 #############################    Functions    ###########################
 #########################################################################
 
-@st.cache(persist=True)
+@st.cache()
 def connect_mongo(collection_name):
 
     client = MongoClient("mongodb://gdeltuser:gdeltpass@172.31.24.60:27017,172.31.28.231:27017,172.31.25.118:27017/gdelt." + collection_name + "?replicaSet=rsGdelt", readPreference='primaryPreferred')
@@ -26,7 +26,7 @@ def connect_mongo(collection_name):
     collection = db[collection_name]
     return db, collection
 
-@st.cache(persist=True)
+@st.cache()
 def read_mongo(collection, query={}, no_id=True):
     """ Read from Mongo and Store into DataFrame """
 
@@ -42,7 +42,7 @@ def read_mongo(collection, query={}, no_id=True):
 
     return df
 
-@st.cache(persist=True)
+@st.cache()
 def iso(country):
     pays = pycountry.countries.get(alpha_2=country.upper())
     if pays is not None:
@@ -56,7 +56,7 @@ def iso(country):
 #########################################################################
 #############################    Queries    ###########################
 #########################################################################
-@st.cache(persist=True)
+@st.cache()
 def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="\w", language="\w"):
     _, collection_q1 = connect_mongo('query1')
     if type(month) == list :
@@ -67,7 +67,7 @@ def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="\w", lang
     df_q1 = read_mongo(collection_q1, query1_params)
     return df_q1
 
-@st.cache(persist=True)
+@st.cache()
 def query2(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
     db, collection = connect_mongo('query2')
     if type(month) == list :
@@ -79,7 +79,7 @@ def query2(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
     df_q2 = df_q2.sort_values(by = "numMentions", ascending = False)
     return df_q2
 
-@st.cache(persist=True)
+@st.cache()
 def query3(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
     db, collection = connect_mongo('query3')
     if type(month) == list :
