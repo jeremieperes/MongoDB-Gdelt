@@ -119,7 +119,6 @@ elif navigation=='Question 1':
     st.markdown(
         "Afficher le nombre d’articles/évènements qu’il y a eu pour chaque triplet (jour, pays de l’évènement, langue de l’article).")
 
-    graph = st.sidebar.checkbox("Afficher graphiques",False)
     month1 = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
     day1 = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
@@ -139,26 +138,24 @@ elif navigation=='Question 1':
 
     st.dataframe(df_q1)
 
-    if graph:
-
-        if country1 != "" and language1 != "":
-            st.markdown("Nombre d'articles selon le nombre d'événement")
-            fig = px.scatter(df_q1, x="numArticles", y="numEvent")
-            st.plotly_chart(fig)
-
-        if country1 == "":
-            st.markdown("**Couverture médiatique:**")
-            fig = px.choropleth(df_q1_agg_country, locations="iso", color="Couverture médiatique",
-                                range_color=[4.5,7], color_continuous_scale="RdYlGn")
-            st.plotly_chart(fig)
-
-            st.markdown("**Top 10 pays:**")
-            fig = px.bar(df_q1_agg_country[df_q1_agg_country['iso']!=''].sort_values("numArticles", ascending=False)[:10], x="iso", y="numArticles")
-            st.plotly_chart(fig)
-
-        st.markdown("**Top 10 langues:**")
-        fig = px.bar(df_q1_agg_lang.sort_values("numArticles", ascending=False)[:10], x='langue', y='numArticles')
+    if country1 != "" and language1 != "":
+        st.markdown("Nombre d'articles selon le nombre d'événement")
+        fig = px.scatter(df_q1, x="numArticles", y="numEvent")
         st.plotly_chart(fig)
+
+    if country1 == "":
+        st.markdown("**Couverture médiatique:**")
+        fig = px.choropleth(df_q1_agg_country, locations="iso", color="Couverture médiatique",
+                            range_color=[4.5,7], color_continuous_scale="RdYlGn")
+        st.plotly_chart(fig)
+
+        st.markdown("**Top 10 pays:**")
+        fig = px.bar(df_q1_agg_country[df_q1_agg_country['iso']!=''].sort_values("numArticles", ascending=False)[:10], x="iso", y="numArticles")
+        st.plotly_chart(fig)
+
+    st.markdown("**Top 10 langues:**")
+    fig = px.bar(df_q1_agg_lang.sort_values("numArticles", ascending=False)[:10], x='langue', y='numArticles')
+    st.plotly_chart(fig)
 
 
 elif navigation=='Question 2':
@@ -195,7 +192,6 @@ elif navigation=='Question 3':
     st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
 
     source = st.sidebar.text_input('Source name','theguardian.com')
-    graph = st.sidebar.checkbox("Afficher graphiques",False)
     month = st.sidebar.multiselect("Month", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
     day = st.sidebar.multiselect("Day", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                       "13","14","15", "16","17","18","19","20","21","22","23","24",
@@ -236,30 +232,29 @@ elif navigation=='Question 3':
     #st.plotly_chart(fig)
     country['iso']=country['Country'].apply(iso)
 
-    if graph :
-        st.markdown("**Ton moyen par pays :**")
+    st.markdown("**Ton moyen par pays :**")
 
-        fig = px.choropleth(country, locations="iso", color="Tone", range_color=[-10,10],
-                            color_continuous_scale="RdYlGn")
-        st.plotly_chart(fig)
+    fig = px.choropleth(country, locations="iso", color="Tone", range_color=[-10,10],
+                        color_continuous_scale="RdYlGn")
+    st.plotly_chart(fig)
 
-        st.markdown("**Top 10 pays par nombre d'articles :**")
-        fig = px.bar(x=df_countries.Country.value_counts().index[:10], y=df_countries.Country.value_counts().values[:10])
-        st.plotly_chart(fig)
+    st.markdown("**Top 10 pays par nombre d'articles :**")
+    fig = px.bar(x=df_countries.Country.value_counts().index[:10], y=df_countries.Country.value_counts().values[:10])
+    st.plotly_chart(fig)
 
-        #fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
-        #st.plotly_chart(fig)
+    #fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
+    #st.plotly_chart(fig)
 
-        st.markdown("**Top 10 personnes par nombre d'articles :**")
-        fig = px.bar(x=df_persons[df_persons.Person != ''].Person.value_counts().index[:10], y=df_persons.Person.value_counts().values[:10])
-        st.plotly_chart(fig)
+    st.markdown("**Top 10 personnes par nombre d'articles :**")
+    fig = px.bar(x=df_persons[df_persons.Person != ''].Person.value_counts().index[:10], y=df_persons.Person.value_counts().values[:10])
+    st.plotly_chart(fig)
 
-        #fig = px.scatter(theme, x="Tone", y="Number of articles", color='Theme')
-        #st.plotly_chart(fig)
+    #fig = px.scatter(theme, x="Tone", y="Number of articles", color='Theme')
+    #st.plotly_chart(fig)
 
-        st.markdown("**Top 10 thèmes par nombre d'articles :**")
-        fig = px.bar(x=df_themes[df_themes.Theme != ''].Theme.value_counts().index[:10], y=df_themes.Theme.value_counts().values[:10])
-        st.plotly_chart(fig)
+    st.markdown("**Top 10 thèmes par nombre d'articles :**")
+    fig = px.bar(x=df_themes[df_themes.Theme != ''].Theme.value_counts().index[:10], y=df_themes.Theme.value_counts().values[:10])
+    st.plotly_chart(fig)
 
 elif navigation=='Question 4':
     print("")
