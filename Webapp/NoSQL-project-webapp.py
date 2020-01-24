@@ -168,8 +168,9 @@ elif navigation=='Question 2':
     month = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
     day = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                           "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
+    graph = st.sidebar.checkbox("Afficher graphiques")
 
-    if graph == "Oui" :
+    if graph == True :
         db, collection = connect_mongo('query2')
         df_q2_temps = read_mongo(collection, {"Year": year, "Month": {"$regex" : "01|02|03"}})
         df = df_q2_temps.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
@@ -179,12 +180,10 @@ elif navigation=='Question 2':
     df_q2 = query2(source, year=year, month=month, day=day).copy()
     st.dataframe(df_q2)
     #df = px.data.gapminder()
-    print("")
-    print("")
 
 
     #df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
-    if graph == "Oui" :
+    if graph == True :
         st.title("Pour aller plus loin ... ")
         fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[0,2000], width=800, height=800)
         st.plotly_chart(fig)
@@ -219,8 +218,8 @@ elif navigation=='Question 3':
     country = country.rename(columns={'Country':'Number of articles'})
     country.reset_index(inplace=True)
 
-    fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
-    st.plotly_chart(fig)
+    #fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
+    #st.plotly_chart(fig)
 
     country.dropna(inplace=True)
 
@@ -239,8 +238,10 @@ elif navigation=='Question 3':
     person = person.rename(columns={'Person':'Number of articles'})
     person.reset_index(inplace=True)
 
-    fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
-    st.plotly_chart(fig)
+    #fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
+    #st.plotly_chart(fig)
+
+    st.write(person)
 
     st.markdown("**Top 10:**")
     fig = px.bar(x=df_persons.Person.value_counts().index[:10], y=df_persons.Person.value_counts().values[:10])
