@@ -191,7 +191,7 @@ elif navigation=='Question 3':
 
     st.markdown('Pour une source de donnés passée en paramètre, affichez les thèmes, personnes, lieux dont les articles de cette source parlent ainsi que le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.')
 
-    source = st.sidebar.text_input('Source name','theguardian.com')
+    source = st.sidebar.text_input('Source name','lemonde.fr')
     month = st.sidebar.multiselect("Month", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
     day = st.sidebar.multiselect("Day", ["01","02","03", "04","05","06","07","08","09","10","11","12",
                                       "13","14","15", "16","17","18","19","20","21","22","23","24",
