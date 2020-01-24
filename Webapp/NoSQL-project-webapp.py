@@ -11,7 +11,7 @@ import time
 import pycountry
 import os.path
 
-st.title('Projet NoSQL')
+st.title('Projet GDELT')
 
 #########################################################################
 #############################    Functions    ###########################
@@ -143,7 +143,7 @@ elif navigation=='Question 1':
 
     if country1 != "":
         st.markdown("Nombre d'articles selon le nombre d'événement")
-        fig = px.scatter(df_q1, x="numArticles", y="numEvent")
+        fig = px.scatter(df_q1, x="numArticles", y="numEvent", color='langue')
         st.plotly_chart(fig)
 
     if country1 == "":
