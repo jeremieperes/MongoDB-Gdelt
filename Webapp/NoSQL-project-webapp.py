@@ -127,7 +127,7 @@ elif navigation=='Question 1':
     df_q1_agg_lang = df_q1.groupby("langue").sum().reset_index()
 
 
-    df_q1_agg_country['Couverture médiatique'] = df_q1_agg.numArticles / df_q1_agg.numEvent
+    df_q1_agg_country['Couverture médiatique'] = df_q1_agg_country.numArticles / df_q1_agg_country.numEvent
 
     #st.dataframe(df_q1, height=500)
 
