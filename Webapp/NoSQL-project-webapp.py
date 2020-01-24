@@ -123,9 +123,11 @@ elif navigation=='Question 1':
 
     df_q1['iso']=df_q1['pays'].apply(iso)
 
-    df_q1_agg = df_q1.groupby("iso").sum().reset_index()
+    df_q1_agg_country = df_q1.groupby("iso").sum().reset_index()
+    df_q1_agg_lang = df_q1.groupby("langue").sum().reset_index()
 
-    df_q1_agg['Couverture médiatique'] = df_q1_agg.numArticles / df_q1_agg.numEvent
+
+    df_q1_agg_country['Couverture médiatique'] = df_q1_agg.numArticles / df_q1_agg.numEvent
 
     #st.dataframe(df_q1, height=500)
 
@@ -136,15 +138,15 @@ elif navigation=='Question 1':
 
     if country1 == "":
         st.markdown("**Couverture médiatique:**")
-        fig = px.choropleth(df_q1_agg, locations="iso", color="Couverture médiatique", range_color=[4.5,7], color_continuous_scale="RdYlGn")
+        fig = px.choropleth(df_q1_agg_country, locations="iso", color="Couverture médiatique", range_color=[4.5,7], color_continuous_scale="RdYlGn")
         st.plotly_chart(fig)
 
         st.markdown("**Top 10 pays:**")
-        fig = px.bar(df_q1.sort_values("numArticles", ascending=False)[:10], x="pays", y="numArticles")
+        fig = px.bar(df_q1_agg_country.sort_values("numArticles", ascending=False)[:10], x="iso", y="numArticles")
         st.plotly_chart(fig)
 
     st.markdown("**Top 10 langues:**")
-    fig = px.bar(df_q1.sort_values("numArticles", ascending=False)[:10], x='langue', y='numArticles')
+    fig = px.bar(df_q1_agg_lang.sort_values("numArticles", ascending=False)[:10], x='langue', y='numArticles')
     st.plotly_chart(fig)
 
 
