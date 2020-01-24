@@ -150,7 +150,7 @@ elif navigation=='Question 1':
         st.markdown("**Couverture médiatique:**")
         st.write(df_q1_agg_country)
         fig = px.choropleth(df_q1_agg_country, locations="iso", color="Couverture médiatique",
-                            range_color=[4.5,7], color_continuous_scale="RdYlGn", width=800, height=800)
+                            range_color=[4.5,7], color_continuous_scale="RdYlGn")
         st.plotly_chart(fig)
 
         st.markdown("**Top 10 pays:**")
@@ -227,6 +227,7 @@ elif navigation=='Question 3':
 
     country['iso']=country['Country'].apply(iso)
 
+    st.write(country)
     fig = px.choropleth(country, locations="iso", color="Tone", range_color=[-10,10],
                         color_continuous_scale="RdYlGn", width=800, height=800)
     st.plotly_chart(fig)
