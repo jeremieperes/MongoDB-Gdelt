@@ -27,6 +27,8 @@ L’objectif de ce projet est de proposer un système de stockage distribué, r�
 
 ![Architecture](Images/Archi.png)
 
+L'installation de l'architecture sur AWS est décrite pas à pas dans [ce Markdown](Configuration_Environment_AWS.md)
+
 ## ETL
 
 Le processus d'ETL des fichiers GDELT a été réalisé dans un Notebook Zeppelin, en utilisant Spark en Scala. Le Notebook est disponible dans le dossier [Notebooks](Notebooks)
