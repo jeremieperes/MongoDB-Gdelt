@@ -89,7 +89,7 @@ net:
   port: 27017
   bindIp: xxxx.xxxx.xxxx.xxxx   # (ec2 private ip) 
 ```
-#EMR
+# EMR
 #### create EMR cluster with spark/zeppelin installed
 - **add spark mongodb connector int the config file of zeppelin**
 ```shell script
@@ -103,4 +103,3 @@ export SPARK_SUBMIT_OPTIONS="$SPARK_SUBMIT_OPTIONS --conf 'spark.executorEnv.PYT
 ```shell script
 sudo /usr/lib/zeppelin/bin/zeppelin-daemon.sh restart
 ```
-#########################
