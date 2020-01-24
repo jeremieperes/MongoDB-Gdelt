@@ -40,7 +40,7 @@ def read_mongo(collection, query={}, no_id=True):
 
     return df
 
-@cache(persist=True)
+@st.cache(persist=True)
 def iso(country):
     pays = pycountry.countries.get(alpha_2=country.upper())
     if pays is not None:
