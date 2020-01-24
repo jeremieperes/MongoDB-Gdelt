@@ -1,5 +1,11 @@
 # GDELT Exploration
 
+Projet réalisé dans le cadre de notre formation Mastère Spécialisé BigData 2019/2020 par : 
+- Li XU
+- Benyang SUN
+- Jérémie PERES
+- Kevin FERIN
+
 ## Introduction
 
 " The Global Database of Events, Language, and Tone (GDELT), est une initiative pour construire un catalogue de comportements et de croyances sociales à travers le monde, reliant chaque personne, organisation, lieu, dénombrement, thème, source d’information, et événement à travers la planète en un seul réseau massif qui capture ce qui se passe dans le monde, le contexte, les implications ainsi que la perception des gens sur chaque jour".
