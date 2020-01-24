@@ -1,6 +1,6 @@
 # GDELT Exploration
 
-## Introduction 
+## Introduction
 
 " The Global Database of Events, Language, and Tone (GDELT), est une initiative pour construire un catalogue de comportements et de croyances sociales à travers le monde, reliant chaque personne, organisation, lieu, dénombrement, thème, source d’information, et événement à travers la planète en un seul réseau massif qui capture ce qui se passe dans le monde, le contexte, les implications ainsi que la perception des gens sur chaque jour".
 
@@ -17,7 +17,26 @@ L’objectif de ce projet est de proposer un système de stockage distribué, r�
 - Pour une source de donnés passée en paramètre (gkg.SourceCommonName) affichez les thèmes, personnes, lieux dont les articles de cette sources parlent ainsi que le le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.
 - Dresser la cartographie des relations entre les pays d’après le ton des articles : pour chaque paire (pays1, pays2), calculer le nombre d’article, le ton moyen (aggrégations sur Année/Mois/Jour, filtrage par pays ou carré de coordonnées)
 
-## Lancement de l'application de visualisation 
+## Architecture
+
+![Architecture](Images/Archi.png)
+
+## Webapp
+
+Ci-dessous quelques screenshots de la webapp :
+
+**Nombre d'articles entre les US et la France en 2019**
+
+![NbArticle-FR-US](Images/NbArticle-FR-US.png)
+
+**Couverture médiatique du monde (ie pour chaque pays la valeure moyenne de Nombre d'articles / Nombre d'événements)**
+
+![Couverture-mediatique](Images/Couverture-mediatique.png)
+
+D'autres exemples de visualisation sont disponibles dans le dossier [Images](Images)
+
+
+## Lancement de l'application de visualisation
 - **Clone du projet :**
 ```
 git clone https://github.com/jeremieperes/MongoDB-Gdelt.git
@@ -29,7 +48,7 @@ streamlit run NoSQL-project-webapp.py
 ```
 
 - **Visualisation :**
-Ouvrir un navigateur puis : 
+Ouvrir un navigateur puis :
 ```
 locahost:8501
 ```
