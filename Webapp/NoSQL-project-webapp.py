@@ -148,7 +148,7 @@ elif navigation=='Question 1':
 
     if country1 == "":
         st.markdown("**Couverture médiatique:**")
-        st.writ(df_q1_agg_country)
+        st.write(df_q1_agg_country)
         fig = px.choropleth(df_q1_agg_country, locations="iso", color="Couverture médiatique",
                             range_color=[4.5,7], color_continuous_scale="RdYlGn", width=800, height=800)
         st.plotly_chart(fig)
