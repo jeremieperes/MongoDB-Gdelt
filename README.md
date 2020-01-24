@@ -21,7 +21,13 @@ L’objectif de ce projet est de proposer un système de stockage distribué, r�
 
 ![Architecture](Images/Archi.png)
 
+## ETL
+
+Le processus d'ETL des fichiers GDELT a été réalisé dans un Notebook Zeppelin, en utilisant Spark en Scala. Le Notebook est disponible dans le dossier [Notebooks](Notebooks)
+
 ## Webapp
+
+La webapp a été réalisée en Python via la librairie [Streamlit](https://www.streamlit.io/). Le script Python de la webapp est disponible dans le dossier [Webapp](Webapp)
 
 Ci-dessous quelques screenshots de la webapp :
 
@@ -36,7 +42,10 @@ Ci-dessous quelques screenshots de la webapp :
 D'autres exemples de visualisation sont disponibles dans le dossier [Images](Images)
 
 
-## Lancement de l'application de visualisation
+## Lancement de la webapp de visualisation
+
+Après avoir chargé les données dans dans les collections MongoDB, lancez les lignes de code suivantes :
+
 - **Clone du projet :**
 ```
 git clone https://github.com/jeremieperes/MongoDB-Gdelt.git
