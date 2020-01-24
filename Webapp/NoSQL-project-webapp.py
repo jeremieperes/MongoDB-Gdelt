@@ -56,6 +56,10 @@ def iso(country):
 
 def query1(year="2019", month="[0-9][0-9]", day="[0-9][0-9]", country="\w", language="\w"):
     _, collection_q1 = connect_mongo('query1')
+    if type(month) == list :
+        month = "|".join(month)
+    if type(day) == list :
+        day = "|".join(day)
     query1_params = {"jour": {"$regex": year + month + day}, "pays": {"$regex": country}, "langue": {"$regex": language}}
     df_q1 = read_mongo(collection_q1, query1_params)
     return df_q1
@@ -73,6 +77,10 @@ def query2(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
 
 def query3(source, year="2019", month ="[0-9][0-9]" , day = "[0-9][0-9]") :
     db, collection = connect_mongo('query3')
+    if type(month) == list :
+        month = "|".join(month)
+    if type(day) == list :
+        day = "|".join(day)
     query3_params =  {'SourceCommonName':source, "Year": year, "Month" : {"$regex": month}, "Day": {"$regex":day}}
     df_q3 = read_mongo(collection, query3_params)
     return df_q3
@@ -112,11 +120,10 @@ elif navigation=='Question 1':
     st.markdown(
         "Afficher le nombre d’articles/évènements qu’il y a eu pour chaque triplet (jour, pays de l’évènement, langue de l’article).")
 
-    day1 = st.sidebar.selectbox('Day', ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
-                                       '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
-                                       '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'])
-    month1 = st.sidebar.selectbox('Month',
-                                 ['[0-9][0-9]', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'])
+    month1 = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
+    day1 = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
+                                          "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
+
     year1 = st.sidebar.selectbox('Year', ['2019', '2018'])
 
     country1 = st.sidebar.text_input("Country")
@@ -154,7 +161,33 @@ elif navigation=='Question 1':
 
 
 elif navigation=='Question 2':
+
+    st.markdown("Pour un pays donné en paramètre, affichez les évènements qui y ont eu place triées par le nombre de mentions (tri décroissant); permettez une agrégation par jour/mois/année")
+    source = st.sidebar.text_input('Pays :', "FR")
+    year = st.sidebar.selectbox("Année :", ["2018","2019"])
+    month = st.sidebar.multiselect("Mois :", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
+    day = st.sidebar.multiselect("Jour :", ["01","02","03", "04","05","06","07","08","09","10","11","12",
+                                          "13","14","15", "16","17","18","19","20","21","22","23","24", "25","26","27","28", "29", "30"])
+
+    if graph == "Oui" :
+        db, collection = connect_mongo('query2')
+        df_q2_temps = read_mongo(collection, {"Year": year, "Month": {"$regex" : "01|02|03"}})
+        df = df_q2_temps.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
+        df['iso']=df['ActionGeo_CountryCode'].apply(iso)
+
+    #source = st.sidebar.selectbox('Pays :', ["US", "FR", "EN"])
+    df_q2 = query2(source, year=year, month=month, day=day).copy()
+    st.dataframe(df_q2)
+    #df = px.data.gapminder()
     print("")
+    print("")
+
+
+    #df = df_q2.groupby(["ActionGeo_CountryCode","Month"]).agg({"numMentions":"sum"}).reset_index()
+    if graph == "Oui" :
+        st.title("Pour aller plus loin ... ")
+        fig = px.choropleth(df, locations="iso", color="numMentions", animation_frame="Month", range_color=[0,2000], width=800, height=800)
+        st.plotly_chart(fig)
 
 
 elif navigation=='Question 3':
@@ -163,10 +196,11 @@ elif navigation=='Question 3':
 
     source = st.sidebar.text_input('Source name','theguardian.com')
 
-    day = st.sidebar.selectbox('Day', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10',
-                                         '11','12','13','14','15','16','17','18','19','20',
-                                         '21','22','23','24','25','26','27','28','29','30','31'])
-    month = st.sidebar.selectbox('Month', ['[0-9][0-9]','01','02','03','04','05','06','07','08','09','10','11','12'])
+    month = st.sidebar.multiselect("Month", ["01","02","03", "04","05","06","07","08","09","10","11","12"])
+    day = st.sidebar.multiselect("Day", ["01","02","03", "04","05","06","07","08","09","10","11","12",
+                                      "13","14","15", "16","17","18","19","20","21","22","23","24",
+                                      "25","26","27","28", "29", "30"])
+
     year = st.sidebar.selectbox('Year', ['2019','2018'])
 
     df_q3 = query3(source, year=year, month = month , day = day)
@@ -185,8 +219,8 @@ elif navigation=='Question 3':
     country = country.rename(columns={'Country':'Number of articles'})
     country.reset_index(inplace=True)
 
-    #fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
-    #st.plotly_chart(fig)
+    fig = px.scatter(country, x="Tone", y="Number of articles", color='Country')
+    st.plotly_chart(fig)
 
     country.dropna(inplace=True)
 
@@ -205,8 +239,8 @@ elif navigation=='Question 3':
     person = person.rename(columns={'Person':'Number of articles'})
     person.reset_index(inplace=True)
 
-    #fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
-    #st.plotly_chart(fig)
+    fig = px.scatter(person, x="Tone", y="Number of articles", color='Person')
+    st.plotly_chart(fig)
 
     st.markdown("**Top 10:**")
     fig = px.bar(x=df_persons.Person.value_counts().index[:10], y=df_persons.Person.value_counts().values[:10])
