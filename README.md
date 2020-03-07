@@ -1,6 +1,6 @@
 # GDELT Exploration
 
-Projet réalisé dans le cadre de notre formation Mastère Spécialisé BigData 2019/2020 à Télécom Paris par : 
+Project carried out as part of the MS BigData 2019/2020 at Télécom Paris by : 
 - Li XU
 - Benyang SUN
 - Jérémie PERES
@@ -8,64 +8,64 @@ Projet réalisé dans le cadre de notre formation Mastère Spécialisé BigData 
 
 ## Introduction
 
-" The Global Database of Events, Language, and Tone (GDELT), est une initiative pour construire un catalogue de comportements et de croyances sociales à travers le monde, reliant chaque personne, organisation, lieu, dénombrement, thème, source d’information, et événement à travers la planète en un seul réseau massif qui capture ce qui se passe dans le monde, le contexte, les implications ainsi que la perception des gens sur chaque jour".
+"The Global Database of Events, Language, and Tone (GDELT), is an initiative to build a catalogue of social behaviours and beliefs around the world, linking every person, organisation, place, count, theme, source of information, and event across the planet into one massive network that captures what is happening in the world, the context, implications, and people's perception of each day.
 
-Cette base de données a eu beaucoup d’utilisations, pour mieux comprendre l’évolution et l’impact de la crise financière du 2008 (Bayesian dynamic financial networks with time-varying predictors) ou analyser l’évolution des relations entre des pays impliquées dans des conflits (Massive Media Event Data Analysis to Assess World-Wide Political Conflict and Instability ).
+This database has had many uses, to better understand the evolution and impact of the 2008 financial crisis (Bayesian dynamic financial networks with time-varying predictors) or to analyse the evolution of relations between countries involved in conflicts (Massive Media Event Data Analysis to Assess World-Wide Political Conflict and Instability).
 
-L’objectif du projet est de concevoir un système qui permet d’analyser le jeu de donnees GDELT et ses sources de donnees.
+The aim of the project is to build an architecture for analysing the GDELT dataset and its data sources.
 
-## Objectif
+## Objective
 
-L’objectif de ce projet est de proposer un système de stockage distribué, résilient et performant sur AWS pour repondre aux question suivantes:
+The objective of this project is to propose a distributed, resilient and high-performance storage system on AWS to answer the following questions:
 
-- Afficher le nombre d’articles/évènements qu’il y a eu pour chaque triplet (jour, pays de l’évènement, langue de l’article).
-- Pour un pays donné en paramètre, affichez les évènements qui y ont eu place triées par le nombre de mentions (tri décroissant); permettez une agrégation par jour/mois/année
-- Pour une source de donnés passée en paramètre (gkg.SourceCommonName) affichez les thèmes, personnes, lieux dont les articles de cette sources parlent ainsi que le le nombre d’articles et le ton moyen des articles (pour chaque thème/personne/lieu); permettez une agrégation par jour/mois/année.
-- Dresser la cartographie des relations entre les pays d’après le ton des articles : pour chaque paire (pays1, pays2), calculer le nombre d’article, le ton moyen (aggrégations sur Année/Mois/Jour, filtrage par pays ou carré de coordonnées)
+- Display the number of articles/events there were for each triplet (day, country of the event, language of the article).
+- For a given country in parameter, display the events that took place there sorted by the number of mentions (descending sort); allow an aggregation by day/month/year.
+- For a data source passed in parameter (gkg.SourceCommonName) display the themes, people, places that the articles of this source talk about as well as the number of articles and the average tone of the articles (for each theme/person/place); allow aggregation by day/month/year.
+- Map the relationships between countries according to the tone of the articles: for each pair (country1, country2), calculate the number of articles, the average tone (aggregating to Year/Month/Day, filtering by country or square of coordinates)
 
 ## Architecture
 
 ![Architecture](Images/Archi.png)
 
-L'installation de l'architecture sur AWS est décrite pas à pas dans [ce Markdown](Configuration_Environment_AWS.md)
+The installation of the architecture on AWS is described step by step in [ce Markdown](Configuration_Environment_AWS.md)
 
 ## ETL
 
-Le processus d'ETL des fichiers GDELT a été réalisé dans un Notebook Zeppelin, en utilisant Spark en Scala. Le Notebook est disponible dans le dossier [Notebooks](Notebooks)
+The ETL process of the GDELT files was done in a Zeppelin Notebook, using Spark (Scala). The Notebook is available in the [Notebooks](Notebooks)
 
 ## Webapp
 
-La webapp a été réalisée en Python via la librairie [Streamlit](https://www.streamlit.io/). Le script Python de la webapp est disponible dans le dossier [Webapp](Webapp)
+The webapp was made in Python via the [Streamlit](https://www.streamlit.io/) library. The Python script of the webapp is available in the folder [Webapp](Webapp)
 
-Ci-dessous quelques screenshots de la webapp :
+Below are some screenshots of the webapp :
 
-**Nombre d'articles entre les US et la France en 2019**
+**Number of articles between the US and France in 2019**
 
 ![NbArticle-FR-US](Images/NbArticle-FR-US.png)
 
-**Couverture médiatique du monde (ie pour chaque pays la valeure moyenne de Nombre d'articles / Nombre d'événements)**
+**World media coverage (i.e. for each country the average value of Number of articles / Number of events)**
 
 ![Couverture-mediatique](Images/Couverture-mediatique.png)
 
-D'autres exemples de visualisation sont disponibles dans le dossier [Images](Images)
+More vizualisation examples are available in the [Images](Images) folder.
 
 
-## Lancement de la webapp de visualisation
+## Launching the visualization webapp
 
-Après avoir chargé les données dans dans les collections MongoDB, lancez les lignes de code suivantes :
+After loading the data into the MongoDB collections, run the following lines of code :
 
-- **Clone du projet :**
+- **Project clone :**
 ```
 git clone https://github.com/jeremieperes/MongoDB-Gdelt.git
 ```
-- **Lancement de la web app :**
+- **Launching the web app :**
 ```
 cd Webapp
 streamlit run NoSQL-project-webapp.py
 ```
 
-- **Visualisation :**
-Ouvrir un navigateur puis :
+- **Viewing:**
+Open a browser then :
 ```
 locahost:8501
 ```
